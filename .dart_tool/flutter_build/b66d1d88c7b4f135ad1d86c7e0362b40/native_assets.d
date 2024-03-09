@@ -1,0 +1,1 @@
+ D:\\Desktop\\vocabulary\\.dart_tool\\flutter_build\\b66d1d88c7b4f135ad1d86c7e0362b40\\native_assets.yaml: 
