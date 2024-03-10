@@ -46,19 +46,15 @@ dependencies:
   path_provider:
   permission_handler:
   dio:
-  get:
-  flutter_card_swiper: ^7.0.0
   card_swiper:
   flutter_splash_screen: ^3.0.0
-  # 播放器
   video_player: ^2.2.11
-  # 屏幕旋转
   auto_orientation: ^2.2.1
-  # 亮度和音量调节
   brightness_volume: ^1.0.3
   icons_launcher: ^2.1.7
-  animated_svg: ^2.0.0
   flutter_svg:
+  oktoast:
+  flutter_slidable:
 
 dev_dependencies:
   floor_generator:

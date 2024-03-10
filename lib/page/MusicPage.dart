@@ -20,18 +20,12 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final size =MediaQuery.of(context).size;
     final width =size.width;
-    final height =size.height;
     return Scaffold(
       appBar: AppBar(
-        title: Text('推荐'),
+        title: const Text('推荐'),
         flexibleSpace: FlexibleSpaceBar(
           background: Container(
             color: Colors.white, // 背景色设置为透明
@@ -54,8 +48,8 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
                     bottom: 5,
                   ),
                   alignment: Alignment.center,
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  child: const ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                     child: BannerPage(),
                   )
               ),
@@ -63,7 +57,7 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
                 margin: const EdgeInsets.only(left: 17),
                 child: Row(
                   children: [
-                    Text('今日推荐',style: TextStyle(fontSize: 18),),
+                    const Text('今日推荐',style: TextStyle(fontSize: 18),),
                     Container(
                       width: 15,
                     ),
@@ -87,31 +81,7 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
                 margin: const EdgeInsets.only(left: 17),
                 child: Row(
                   children: [
-                    Text(' 华语推荐',style: TextStyle(fontSize: 18),),
-                    Container(
-                      width: 15,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: 189,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  reverse: false,
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: Row(
-                    children: ApiDio.fromSheetList.isEmpty? [] :ApiDio.fromSheetList.map((song) =>
-                        MusicCard(musicSheet: song, isOne: true),
-                    ).toList(),
-                  ),
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 17),
-                child: Row(
-                  children: [
-                    Text(' MV推荐',style: TextStyle(fontSize: 18),),
+                    const Text(' MV推荐',style: TextStyle(fontSize: 18),),
                     Container(
                       width: 15,
                     ),
@@ -134,9 +104,7 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
           await Future.wait([
             ApiDio.getBan(),
             ApiDio.getSheet(),
-          ]).then((values) => setState(() {
-
-          }));
+          ]).then((values) => setState(() {}));
         },
       ),
     );

@@ -1,41 +1,49 @@
 // To parse this JSON data, do
 //
-//     final mvModel = mvModelFromJson(jsonString);
+//     final newMvModel = newMvModelFromJson(jsonString);
 
 import 'dart:convert';
 
-MvModel mvModelFromJson(String str) => MvModel.fromJson(json.decode(str));
+MvModel newMvModelFromJson(String str) => MvModel.fromJson(json.decode(str));
 
-String mvModelToJson(MvModel data) => json.encode(data.toJson());
+String newMvModelToJson(MvModel data) => json.encode(data.toJson());
 
 class MvModel {
-  String id;
-  String songs;
-  String sings;
+  int id;
+  String name;
+  String artistName;
+  String desc;
   String cover;
-  String mv;
+  DateTime publishTime;
+  Map<String, String> brs;
 
   MvModel({
     required this.id,
-    required this.songs,
-    required this.sings,
+    required this.name,
+    required this.artistName,
+    required this.desc,
     required this.cover,
-    required this.mv,
+    required this.publishTime,
+    required this.brs,
   });
 
   factory MvModel.fromJson(Map<String, dynamic> json) => MvModel(
     id: json["id"],
-    songs: json["songs"],
-    sings: json["sings"],
+    name: json["name"],
+    artistName: json["artistName"],
+    desc: json["desc"],
     cover: json["cover"],
-    mv: json["mv"],
+    publishTime: DateTime.parse(json["publishTime"]),
+    brs: Map.from(json["brs"]).map((k, v) => MapEntry<String, String>(k, v)),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "songs": songs,
-    "sings": sings,
+    "name": name,
+    "artistName": artistName,
+    "desc": desc,
     "cover": cover,
-    "mv": mv,
+    "publishTime": "${publishTime.year.toString().padLeft(4, '0')}-${publishTime.month.toString().padLeft(2, '0')}-${publishTime.day.toString().padLeft(2, '0')}",
+    "brs": Map.from(brs).map((k, v) => MapEntry<String, dynamic>(k, v)),
   };
 }

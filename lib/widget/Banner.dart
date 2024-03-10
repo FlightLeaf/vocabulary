@@ -14,20 +14,20 @@ class BannerPage extends StatefulWidget {
 
 class _BannerPageState extends State<BannerPage> {
 
-
-  void getBanList() async {
-    setState(() { });
+  Future<void> init() async{
+    await ApiDio.getBan();
+    setState(() {
+    });
   }
 
   @override
   void initState() {
+    init();
     super.initState();
-    getBanList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final size =MediaQuery.of(context).size;
     return ApiDio.ban.isEmpty? Container() :Swiper(
       itemBuilder: (BuildContext context,int index){
         return Image.network(ApiDio.ban[index],fit: BoxFit.fill,);

@@ -29,7 +29,8 @@ offset: 偏移数量 , 用于分页 , 如 :( 页数 -1)*30, 其中 30 为 limit 
 limit: 取出歌单数量 , 默认为 20
 before: 分页参数,取上一页最后一个歌单的 updateTime 获取下一页数据
 接口地址 : /top/playlist/highquality
-调用例子 : http://localhost:3000/top/playlist/highquality?before=1503639064232&limit=3
+
+华语民谣 2387998356 2312165875 995552555 5386704458
 
 ## 获取音乐 url - 新版
 说明 : 使用注意事项同上

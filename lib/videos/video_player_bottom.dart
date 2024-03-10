@@ -1,7 +1,7 @@
 /// Created by RongCheng on 2022/1/19.
 
 import 'package:flutter/material.dart';
-import 'package:vocabulary/model/newMv.dart';
+import 'package:vocabulary/model/mv.dart';
 import 'package:vocabulary/videos/video_player_slider.dart';
 
 import '../model/TempOther.dart';
@@ -12,7 +12,7 @@ class VideoPlayerBottom extends StatefulWidget {
   VideoPlayerBottom({Key? key, required this.mvModel}) : super(key: key);
   late Function(bool) opacityCallback;
 
-  NewMvModel mvModel;
+  MvModel mvModel;
   @override
   _VideoPlayerBottomState createState() => _VideoPlayerBottomState();
 }
@@ -21,7 +21,7 @@ class _VideoPlayerBottomState extends State<VideoPlayerBottom> {
   double _opacity = TempValue.isLocked ? 0.0 : 1.0;  // 不能固定值，横竖屏触发会重置
   bool get _isFullScreen => MediaQuery.of(context).orientation == Orientation.landscape;
   late Map<String, String> clarityMap;
-  late NewMvModel model;
+  late MvModel model;
   late String nowBrs;
 
   @override

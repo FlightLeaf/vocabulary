@@ -1,7 +1,10 @@
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:vocabulary/tools/SQLTools.dart';
 
 import '../model/music.dart';
+import 'ApiDio.dart';
 
 class AudioPlayerUtil{
 
@@ -11,6 +14,7 @@ class AudioPlayerUtil{
   static bool get isListPlayer => _instance._isListPlayer; // 当前是否是列表播放
   static List<MusicModel> get list => _instance._musicModels;
 
+  /// 添加音频模型
   static void addMusicModel({required MusicModel models}) {
     for(MusicModel model in _instance._musicModels){
       if(model.id == models.id){
@@ -20,17 +24,21 @@ class AudioPlayerUtil{
     _instance._musicModels.add(models);
   }
 
+  /// 删除音频模型
   static void removeMusicModel({required MusicModel model}){
     _instance._musicModels.remove(model);
   }
 
+  /// 添加音频模型-下一首播放
   static void addMusicModelNext({required MusicModel models}){
     for(MusicModel model in _instance._musicModels){
       if(model.id == models.id){
         return;
       }
     }
+    showToast('下一首播放');
     _instance._musicModels.insert(_instance._musicModels.indexOf(_instance._musicModel!)+1, models);
+
   }
 
   static void playerHandle({required MusicModel model}){
@@ -50,8 +58,9 @@ class AudioPlayerUtil{
       }
     }
   }
+
   // 列表播放
-  static void listPlayerHandle({required List<MusicModel> musicModels,MusicModel? musicModel} ){
+  static Future<void> listPlayerHandle({required List<MusicModel> musicModels,MusicModel? musicModel} ) async {
     if(_instance._musicModel == musicModel){
       _instance._audioPlayer.pause();
     }
@@ -262,8 +271,10 @@ class AudioPlayerUtil{
 
   // 播放新音频
   void _playNewAudio(MusicModel model) async{
-    await _audioPlayer.play(UrlSource(model.mp3Url!));
+    await _audioPlayer.play(UrlSource(model.mp3Url));
     _musicModel = model;
+    SqlTools.inTimeMusic(_musicModel!);
+    ApiDio.getHistory();
     _showTipView(true);
   }
 

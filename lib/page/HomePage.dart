@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:marquee/marquee.dart';
 import 'package:vocabulary/model/music.dart';
-import 'package:vocabulary/page/PlayList.dart';
+import 'package:vocabulary/page/PlayingListPage.dart';
 
 import '../tools/ApiDio.dart';
 import '../tools/AudioPlayerTools.dart';
@@ -148,7 +148,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                       children: [
                         Container(
                           width: width,
-                          height: height*0.05,
+                          height: 40,
                           decoration: BoxDecoration(
                             color: Colors.blue.shade400,
                             borderRadius: BorderRadius.circular(10),
@@ -243,9 +243,10 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                           ),
                                         ),
                                         onTap: () {
+                                          //if(AudioPlayerUtil.isListPlayer)print('==========');
                                           if(AudioPlayerUtil.list.isEmpty) return;
                                           Navigator.of(context).push(MaterialPageRoute(
-                                            builder: (context) => playList(),
+                                            builder: (context) => PlayingListPage(),
                                           ));
                                         },
                                       ),

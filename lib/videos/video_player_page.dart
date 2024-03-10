@@ -3,7 +3,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:vocabulary/model/mv.dart';
-import 'package:vocabulary/model/newMv.dart';
 import 'package:vocabulary/videos/video_player_bottom.dart';
 import 'package:vocabulary/videos/video_player_center.dart';
 import 'package:vocabulary/videos/video_player_gestures.dart';
@@ -15,7 +14,7 @@ import '../tools/VideosTools.dart';
 class VideoPlayerPage extends StatefulWidget {
   VideoPlayerPage({Key? key, required this.mvModel, required this.url}) : super(key: key);
 
-  final NewMvModel mvModel;
+  final MvModel mvModel;
   final String url;
 
   @override

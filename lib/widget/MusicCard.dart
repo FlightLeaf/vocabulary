@@ -50,9 +50,6 @@ class _MusicCardState extends State<MusicCard> {
 
   @override
   Widget build(BuildContext context) {
-    final size =MediaQuery.of(context).size;
-    final width =size.width;
-    final height =size.height;
     return Card(
       color: Colors.white,
       margin: const EdgeInsets.only(
@@ -94,7 +91,7 @@ class _MusicCardState extends State<MusicCard> {
                       ),
                       onTap: () async {
                         ApiDio.getWord(widget.musicSheet.id.toString());
-                        AudioPlayerUtil.listPlayerHandle(musicModels:widget.isOne?ApiDio.fromSheetList:ApiDio.musicSheetList, musicModel: widget.musicSheet);
+                        AudioPlayerUtil.listPlayerHandle(musicModels: ApiDio.musicSheetList, musicModel: widget.musicSheet);
                         ApiDio.getNewMV();
                       },
                     ),
@@ -125,7 +122,8 @@ class _MusicCardState extends State<MusicCard> {
                               flex:10,
                               child: Container(
                                   alignment: Alignment.center,
-                                  child: Text(widget.musicSheet.name)
+                                  child: Text(widget.musicSheet.name,softWrap: true,
+                                    overflow: TextOverflow.ellipsis,)
                               ),
                             ),
                           ],

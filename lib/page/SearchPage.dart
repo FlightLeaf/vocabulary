@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:vocabulary/Page/SearchResult.dart';
 import 'package:vocabulary/tools/SQLTools.dart';
 
 import '../tools/ApiDio.dart';
-import '../tools/tools.dart';
+import 'SearchResultPage.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -48,11 +47,11 @@ class _SearchPageState extends State<SearchPage> {
               icon: Icon(Icons.search_sharp, color: Colors.black,), // 搜索图标颜色
               onPressed: () async {
                 if(_searchController.text.isEmpty) return;
-                await inSearch(_searchController.text);
+                await SqlTools.inSearch(_searchController.text);
                 await ApiDio.getSearchWord();
                 setState(() {});
                 Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => searchResult(searchWord: _searchController.text,),
+                  builder: (context) => SearchResultPage(searchWord: _searchController.text,),
                 ));
               },
             ),
@@ -74,7 +73,7 @@ class _SearchPageState extends State<SearchPage> {
                   IconButton(
                     alignment: Alignment.center,
                     onPressed: () async {
-                      await deSearch();
+                      await SqlTools.deSearch();
                       await ApiDio.getSearchWord();
                       setState(() {});
                     },
@@ -105,11 +104,11 @@ class _SearchPageState extends State<SearchPage> {
                             ),
                           ),
                           onTap: () async {
-                            await inSearch(song);
+                            await SqlTools.inSearch(song);
                             await ApiDio.getSearchWord();
                             setState(() {});
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => searchResult(searchWord: song,),
+                              builder: (context) => SearchResultPage(searchWord: song,),
                             ));
                           },
                         ),
@@ -158,11 +157,11 @@ class _SearchPageState extends State<SearchPage> {
                           ApiDio.hotModelList[index].iconUrl!
                       ) : Text(''),
                       onTap: () async {
-                        await inSearch(ApiDio.hotModelList[index].searchWord);
+                        await SqlTools.inSearch(ApiDio.hotModelList[index].searchWord);
                         await ApiDio.getSearchWord();
                         setState(() {    });
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => searchResult(searchWord: ApiDio.hotModelList[index].searchWord,),
+                          builder: (context) => SearchResultPage(searchWord: ApiDio.hotModelList[index].searchWord,),
                         ));
                       },
                     );
@@ -171,7 +170,7 @@ class _SearchPageState extends State<SearchPage> {
               ),
             ),
             Expanded(
-              flex: 8,
+              flex: 10,
               child:Container(),
             ),
           ],

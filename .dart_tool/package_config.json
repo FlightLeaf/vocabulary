@@ -14,12 +14,6 @@
       "languageVersion": "2.19"
     },
     {
-      "name": "animated_svg",
-      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/animated_svg-2.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "2.18"
-    },
-    {
       "name": "archive",
       "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/archive-3.4.10",
       "packageUri": "lib/",
@@ -278,16 +272,16 @@
       "languageVersion": "3.2"
     },
     {
-      "name": "flutter_card_swiper",
-      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/flutter_card_swiper-7.0.0",
-      "packageUri": "lib/",
-      "languageVersion": "3.0"
-    },
-    {
       "name": "flutter_lints",
       "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/flutter_lints-2.0.3",
       "packageUri": "lib/",
       "languageVersion": "2.19"
+    },
+    {
+      "name": "flutter_slidable",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/flutter_slidable-3.0.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "flutter_splash_screen",
@@ -318,12 +312,6 @@
       "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/frontend_server_client-3.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
-    },
-    {
-      "name": "get",
-      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/get-4.6.6",
-      "packageUri": "lib/",
-      "languageVersion": "2.15"
     },
     {
       "name": "glob",
@@ -468,6 +456,12 @@
       "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/nested-1.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.12"
+    },
+    {
+      "name": "oktoast",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/oktoast-3.4.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.17"
     },
     {
       "name": "package_config",
@@ -884,7 +878,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-03-09T00:08:09.354041Z",
+  "generated": "2024-03-10T12:59:55.069344Z",
   "generator": "pub",
   "generatorVersion": "3.3.0"
 }

@@ -6,7 +6,6 @@ import 'package:sqlite3/sqlite3.dart';
 import 'package:vocabulary/model/comment.dart';
 import 'package:vocabulary/model/music.dart';
 import 'package:vocabulary/model/mv.dart';
-import 'package:vocabulary/model/newMv.dart';
 
 import '../model/hot.dart';
 import 'SQLTools.dart';
@@ -19,16 +18,13 @@ class ApiDio {
   static List<HotModel> hotModelList = [];
   /// 音乐歌单列表
   static List<MusicModel> musicSheetList = [];
-  /// 从歌单中获取的音乐列表
-  static List<MusicModel> fromSheetList = [];
-  /// MV歌单列表
-  static List<MvModel> mvSheetList = [];
+
   /// 搜索历史列表
   static List<String> searchList = [];
   /// 歌词映射表
   static Map<String, String> lyricsMap = {};
 
-  static List<NewMvModel> newMvList = [];
+  static List<MvModel> newMvList = [];
 
   static List<String> idList = [];
 
@@ -36,7 +32,11 @@ class ApiDio {
 
   static List<CommentModel> commentList = [];
 
-  /// 获取热门列表数据
+  static List<MusicModel> historyList = [];
+  static List<MusicModel> loveList = [];
+  static List<MusicModel> localList = [];
+
+  /// 获取热搜
   /// 返回值：获取成功返回true，失败返回false
   static Future<bool> getHotList() async {
     Map<String, dynamic> jsonMap = {};
@@ -99,44 +99,74 @@ class ApiDio {
   /// 获取歌单推荐音乐列表
   static Future<void> getSheet() async {
     late Database database;
-    database = sqlite3.open(fileSQL);
+    database = sqlite3.open(SqlTools.fileSQL);
     // 从数据库中随机获取推荐音乐列表
-    var query = 'SELECT * FROM RecdMusicList ORDER BY RANDOM() LIMIT 12';
+    var query = 'SELECT * FROM RecdMusicList ORDER BY RANDOM() LIMIT 15';
     var results = database.select(query);
-    var query2 = 'SELECT * FROM from_100_China ORDER BY RANDOM() LIMIT 12';
-    var results2 = database.select(query2);
 
     musicSheetList.clear();
-    fromSheetList.clear();
 
     results.forEach((element) {
       musicSheetList.add(MusicModel(id: int.parse(element['id']), name: element['name'], author: element['artist'], picUrl: element['pic'], mp3Url: element['url']),);
     });
-    results2.forEach((element) {
-      fromSheetList.add(MusicModel(id: int.parse(element['id']), name: element['name'], author: element['artist'], picUrl: element['pic'], mp3Url: element['url']),);
+    database.dispose();
+  }
+
+  /// 获取歌单推荐音乐列表
+  static void getHistory() {
+    late Database database;
+    database = sqlite3.open(SqlTools.fileSQL);
+
+    var query = '''
+      SELECT d1.*
+      FROM history d1
+      INNER JOIN (
+        SELECT id, MAX(time) as maxTime
+        FROM history
+        GROUP BY id
+      ) d2 ON d1.id = d2.id AND d1.time = d2.maxTime
+      ORDER BY d1.time DESC
+    ''';
+
+    var results = database.select(query);
+
+    historyList.clear();
+
+    results.forEach((element) {
+      historyList.add(MusicModel(id: int.parse(element['id']), name: element['name'], author: element['artist'], picUrl: element['pic'], mp3Url: element['url']),);
     });
     database.dispose();
   }
 
-  /// 获取MV推荐列表
-  static Future<void> getMvSheet() async {
+  /// 获取歌单推荐音乐列表
+  static Future<void> getLove() async {
     late Database database;
-    database = sqlite3.open(fileSQL);
-    // 从数据库中随机获取MV推荐列表
-    var query = 'SELECT * FROM mvList ORDER BY RANDOM() LIMIT 3';
+    database = sqlite3.open(SqlTools.fileSQL);
+
+    var query = 'SELECT DISTINCT * FROM love';
     var results = database.select(query);
 
-    mvSheetList.clear();
+    loveList.clear();
     results.forEach((element) {
-      mvSheetList.add(
-          MvModel(
-            id: element['id'],
-            songs: element['songs'],
-            sings: element['sings'],
-            cover: element['cover'],
-            mv: element['mv'],
-          ));
+      loveList.add(MusicModel(id: int.parse(element['id']), name: element['name'], author: element['artist'], picUrl: element['pic'], mp3Url: element['url']),);
     });
+    database.dispose();
+  }
+
+  /// 获取歌单推荐音乐列表
+  static Future<void> getDownload() async {
+    late Database database;
+    database = sqlite3.open(SqlTools.fileSQL);
+
+    var query = 'SELECT * FROM download';
+    var results = database.select(query);
+
+    print(results);
+    localList.clear();
+    results.forEach((element) {
+      localList.add(MusicModel(id: int.parse(element['id']), name: element['name'], author: element['artist'], picUrl: element['pic'], mp3Url: element['url']),);
+    });
+    print(localList.length.toString()+'================');
     database.dispose();
   }
 
@@ -157,7 +187,7 @@ class ApiDio {
   /// 获取搜索历史关键词列表
   static Future<void> getSearchWord() async {
     late Database database;
-    database = sqlite3.open(fileSQL);
+    database = sqlite3.open(SqlTools.fileSQL);
     // 从数据库中获取搜索历史关键词
     var query = 'SELECT DISTINCT word FROM searchWordTime';
     var results = database.select(query);
@@ -191,7 +221,7 @@ class ApiDio {
   static Future<List<MusicModel>> getSheetDetail(String id) async{
     List<MusicModel> musicModelList = [];
     try {
-      Response response = await Dio().get('https://api.injahow.cn/meting/?type=playlist&id=2619366284');
+      Response response = await Dio().get('https://api.injahow.cn/meting/?type=playlist&id=$id');
       return musicModelList;
     } catch (e) {
       return musicModelList;
@@ -243,6 +273,7 @@ class ApiDio {
   }
 
   static Future<void> getNewMVID() async{
+    newMvList.clear();
     try {
       idList.clear();
       Response response = await Dio().get('http://114.55.94.213:3000/top/mv?limit=10');
@@ -258,13 +289,14 @@ class ApiDio {
 
 
   static Future<void> getNewMV() async {
+    newMvList.clear();
     try {
-      newMvList.clear();
+
       for(String id in idList){
         Response response = await Dio().post("http://music.163.com/api/mv/detail?id=$id&type=mp4");
         Map<String, dynamic> mp4 = json.decode(response.toString());
         Map<String, dynamic> rand = mp4['data'];
-        newMvList.add(NewMvModel.fromJson(rand));
+        newMvList.add(MvModel.fromJson(rand));
       }
     } catch (e) {
     }
