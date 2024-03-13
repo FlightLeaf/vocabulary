@@ -55,6 +55,8 @@ dependencies:
   flutter_svg:
   oktoast:
   flutter_slidable:
+  flutter_card_swiper: ^7.0.0
+  extended_image:
 
 dev_dependencies:
   floor_generator:
@@ -87,6 +89,8 @@ flutter:
     - assets/images/
     - assets/app.png
     - assets/img.svg
+    - assets/loading.gif
+    - assets/music.gif
   #   - assets/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

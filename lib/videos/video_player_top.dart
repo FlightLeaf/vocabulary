@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 
 import '../model/TempOther.dart';
-import '../tools/VideosTools.dart';
+import '../tools/videos_play_tools.dart';
 // ignore: must_be_immutable
 class VideoPlayerTop extends StatefulWidget {
   VideoPlayerTop({Key? key,required this.title}) : super(key: key);

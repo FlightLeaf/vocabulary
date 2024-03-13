@@ -224,6 +224,18 @@
       "languageVersion": "2.15"
     },
     {
+      "name": "extended_image",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/extended_image-8.1.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.18"
+    },
+    {
+      "name": "extended_image_library",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/extended_image_library-3.6.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.19"
+    },
+    {
       "name": "fading_edge_scrollview",
       "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/fading_edge_scrollview-3.0.0",
       "packageUri": "lib/",
@@ -270,6 +282,12 @@
       "rootUri": "file:///D:/flutter/packages/flutter",
       "packageUri": "lib/",
       "languageVersion": "3.2"
+    },
+    {
+      "name": "flutter_card_swiper",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/flutter_card_swiper-7.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
     },
     {
       "name": "flutter_lints",
@@ -336,6 +354,12 @@
       "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/http-1.2.1",
       "packageUri": "lib/",
       "languageVersion": "3.3"
+    },
+    {
+      "name": "http_client_helper",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/http_client_helper-3.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
     },
     {
       "name": "http_multi_server",
@@ -878,7 +902,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-03-10T12:59:55.069344Z",
+  "generated": "2024-03-12T04:21:47.572093Z",
   "generator": "pub",
   "generatorVersion": "3.3.0"
 }

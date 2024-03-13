@@ -9,7 +9,7 @@ import 'package:vocabulary/videos/video_player_gestures.dart';
 import 'package:vocabulary/videos/video_player_top.dart';
 
 import '../model/TempOther.dart';
-import '../tools/VideosTools.dart';
+import '../tools/videos_play_tools.dart';
 
 class VideoPlayerPage extends StatefulWidget {
   VideoPlayerPage({Key? key, required this.mvModel, required this.url}) : super(key: key);

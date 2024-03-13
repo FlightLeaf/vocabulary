@@ -146,6 +146,14 @@ dio
 2.15
 file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/dio-5.4.1/
 file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/dio-5.4.1/lib/
+extended_image
+2.18
+file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/extended_image-8.1.1/
+file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/extended_image-8.1.1/lib/
+extended_image_library
+2.19
+file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/extended_image_library-3.6.0/
+file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/extended_image_library-3.6.0/lib/
 fading_edge_scrollview
 2.12
 file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/fading_edge_scrollview-3.0.0/
@@ -174,6 +182,10 @@ floor_generator
 2.12
 file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/floor_generator-1.4.2/
 file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/floor_generator-1.4.2/lib/
+flutter_card_swiper
+3.0
+file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/flutter_card_swiper-7.0.0/
+file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/flutter_card_swiper-7.0.0/lib/
 flutter_lints
 2.19
 file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/flutter_lints-2.0.3/
@@ -210,6 +222,10 @@ http
 3.3
 file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/http-1.2.1/
 file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/http-1.2.1/lib/
+http_client_helper
+2.12
+file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/http_client_helper-3.0.0/
+file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/http_client_helper-3.0.0/lib/
 http_multi_server
 2.12
 file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/http_multi_server-3.2.1/

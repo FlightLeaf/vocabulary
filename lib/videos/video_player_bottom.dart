@@ -5,7 +5,7 @@ import 'package:vocabulary/model/mv.dart';
 import 'package:vocabulary/videos/video_player_slider.dart';
 
 import '../model/TempOther.dart';
-import '../tools/VideosTools.dart';
+import '../tools/videos_play_tools.dart';
 
 // ignore: must_be_immutable
 class VideoPlayerBottom extends StatefulWidget {

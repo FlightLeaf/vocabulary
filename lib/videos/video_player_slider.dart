@@ -4,7 +4,7 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/services.dart';
 
-import '../tools/VideosTools.dart';
+import '../tools/videos_play_tools.dart';
 
 
 class VideoPlayerSlider extends StatefulWidget {
