@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:audioplayers/audioplayers.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:vocabulary/tools/sqlite_tools.dart';
@@ -13,6 +15,7 @@ class AudioPlayerUtil{
   static Duration get position => _instance._position; // 当前音频播放进度
   static bool get isListPlayer => _instance._isListPlayer; // 当前是否是列表播放
   static List<MusicModel> get list => _instance._musicModels;
+  static NextState get nextState => _instance._nextState;
 
   /// 添加音频模型
   static void addMusicModel({required MusicModel models}) {
@@ -88,28 +91,77 @@ class AudioPlayerUtil{
     }
   }
 
+  static void changeNextState(NextState nextState){
+    _instance._nextState = nextState;
+  }
+
+  static List<int> _generateUniqueRandomIndices(int length) {
+    List<int> indices = List.generate(length, (index) => index + 1);
+    var random = Random();
+    indices.shuffle(random);
+    return indices;
+  }
+
   // 上一曲 ，只在列表播放时有效
   static void previousMusic(){
     if(_instance._isListPlayer == false) return;
-    int index = _instance._musicModels.indexOf(_instance._musicModel!);
-    if(index == 0){
-      index = _instance._musicModels.length-1;
-    }else{
-      index -= 1;
+    switch(_instance._nextState){
+      case NextState.sequential:
+        int index = _instance._musicModels.indexOf(_instance._musicModel!);
+        if(index == 0){
+          index = _instance._musicModels.length-1;
+        }else{
+          index -= 1;
+        }
+        _instance._playNewAudio(_instance._musicModels[index]);
+        break;
+
+      case NextState.random:
+        int randomIndex = Random().nextInt(_instance._musicModels.length);
+        _instance._playNewAudio(_instance._musicModels[randomIndex]);
+        break;
+
+      case NextState.single:
+        int index = _instance._musicModels.indexOf(_instance._musicModel!);
+        if(index == 0){
+          index = _instance._musicModels.length-1;
+        }else{
+          index -= 1;
+        }
+        _instance._playNewAudio(_instance._musicModels[index]);
+        break;
     }
-    _instance._playNewAudio(_instance._musicModels[index]);
   }
+
+
 
   // 下一曲，只在列表播放时有效
   static void nextMusic(){
     if(_instance._isListPlayer == false) return;
-    int index = _instance._musicModels.indexOf(_instance._musicModel!);
-    if(index == _instance._musicModels.length-1){ // 最后一首
-      index = 0;
-    }else{
-      index += 1;
+    switch(_instance._nextState){
+      case NextState.sequential:
+        int index = _instance._musicModels.indexOf(_instance._musicModel!);
+        if(index == _instance._musicModels.length-1){ // 最后一首
+          index = 0;
+        }else{
+          index += 1;
+        }
+        _instance._playNewAudio(_instance._musicModels[index]);
+        break;
+      case NextState.random:
+        int randomIndex = Random().nextInt(_instance._musicModels.length);
+        _instance._playNewAudio(_instance._musicModels[randomIndex]);
+        break;
+      case NextState.single:
+        int index = _instance._musicModels.indexOf(_instance._musicModel!);
+        if(index == _instance._musicModels.length-1){ // 最后一首
+          index = 0;
+        }else{
+          index += 1;
+        }
+        _instance._playNewAudio(_instance._musicModels[index]);
+        break;
     }
-    _instance._playNewAudio(_instance._musicModels[index]);
   }
 
   // 跳转到某一时段
@@ -240,7 +292,12 @@ class AudioPlayerUtil{
     // 播放结束
     _audioPlayer.onPlayerComplete.listen((_) {
       if(_isListPlayer == true){ // 开启列表播放后，自动下一曲
-        nextMusic();
+        if(_nextState == NextState.single){
+          int index = _instance._musicModels.indexOf(_instance._musicModel!);
+          _instance._playNewAudio(_instance._musicModels[index]);
+        }else{
+          nextMusic();
+        }
       }else{
         _state = PlayerState.completed;
         _stateUpdate(_state);
@@ -251,6 +308,7 @@ class AudioPlayerUtil{
     _audioPlayer.onLog.listen((_) {
       _resetPlayer();
     });
+
   }
 
   PlayerState _state = PlayerState.stopped;
@@ -268,6 +326,7 @@ class AudioPlayerUtil{
   bool _show = false;
   bool _isListPlayer = false;
   List<MusicModel> _musicModels = [];
+  NextState _nextState = NextState.sequential;
 
   // 播放新音频
   void _playNewAudio(MusicModel model) async{
@@ -343,4 +402,11 @@ class ListenerShowModel{
     key = list.first;
     listener = list.last;
   }
+}
+
+//枚举
+enum NextState{
+  sequential,
+  random,
+  single
 }

@@ -208,7 +208,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                   child: Container(
                                     child: Icon(
                                       !_playing?Icons.play_circle_outline_rounded: Icons.pause_circle_outline_rounded,
-                                      //size: width*0.1,
+                                      size: 32,
                                       color: Colors.white,
                                     ),
                                   ),

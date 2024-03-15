@@ -36,25 +36,26 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
           collapseMode: CollapseMode.parallax,
         ),
         actions: [
-          IconButton(
-              onPressed: () {
-                try{
-                  if(AudioPlayerUtil.state == PlayerState.playing && AudioPlayerUtil.musicModel!.id == ApiDio.randomList.first.id){
 
-                  }else{
-                    AudioPlayerUtil.playerHandle(model: ApiDio.randomList.first);
-                  }
-                }catch(e){
-                  print(e);
-                }finally{
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => RandPage()
-                  ));
+          InkWell(
+            child: Image.asset('assets/card.png',width: width*0.08,),
+            onTap: () {
+              try{
+                if(AudioPlayerUtil.state == PlayerState.playing && AudioPlayerUtil.musicModel!.id == ApiDio.randomList.first.id){
+
+                }else{
+                  AudioPlayerUtil.playerHandle(model: ApiDio.randomList.first);
                 }
-              },
-              icon: Icon(Icons.library_music_rounded, color: Colors.greenAccent,)
+              }catch(e){
+                print(e);
+              }finally{
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => RandPage()
+                ));
+              }
+            },
           ),
-          SizedBox(width: 6,)
+          SizedBox(width:15,)
         ],
       ),
       body: RefreshIndicator(

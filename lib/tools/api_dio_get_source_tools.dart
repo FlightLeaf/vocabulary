@@ -38,14 +38,14 @@ class ApiDio {
 
   /// 获取热搜
   /// 返回值：获取成功返回true，失败返回false
-  static Future<bool> getHotList() async {
+  static Future<bool> getHotList({String ? id = '1'}) async {
     Map<String, dynamic> jsonMap = {};
     try {
-      Response response = await Dio().get("http://114.55.94.213:3000/search/hot/detail");
+      Response response = await Dio().get("https://api.wer.plus/api/wytop?t=$id");
       jsonMap = json.decode(response.toString());
       List<dynamic> dataList = jsonMap['data'];
       hotModelList = dataList.map((item) {
-        return HotModel.fromJson(item);
+        return HotModel(searchWord: item['name']);
       }).toList();
       return true;
     } catch (e) {
@@ -198,7 +198,7 @@ class ApiDio {
   /// 获取被禁展示图片列表
   static Future<bool> getBan() async{
     try {
-      Response response = await Dio().get("http://114.55.94.213:3000/banner?type=1");
+      Response response = await Dio().get("http://159.75.108.178:3000/banner?type=1");
       Map<String, dynamic> mp3 = json.decode(response.toString());
       List<dynamic> banList = mp3['banners'];
 
@@ -281,7 +281,7 @@ class ApiDio {
     newMvList.clear();
     try {
       idList.clear();
-      Response response = await Dio().get('http://114.55.94.213:3000/top/mv?limit=10');
+      Response response = await Dio().get('http://159.75.108.178:3000/top/mv?limit=10');
       Map<String, dynamic> map = json.decode(response.toString());
       List<dynamic> rand = map['data'];
       rand.forEach((element) {
@@ -316,7 +316,6 @@ class ApiDio {
       rand.forEach((element) {
         commentList.add(CommentModel.fromJson(element));
       });
-      print('============='+commentList.length.toString());
     } catch (e) {
     }
   }

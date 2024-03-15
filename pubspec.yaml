@@ -57,6 +57,7 @@ dependencies:
   flutter_slidable:
   flutter_card_swiper: ^7.0.0
   extended_image:
+  record: ^4.4.4
 
 dev_dependencies:
   floor_generator:
@@ -91,6 +92,11 @@ flutter:
     - assets/img.svg
     - assets/loading.gif
     - assets/music.gif
+    - assets/10001.gif
+    - assets/10002.gif
+    - assets/mac.png
+    - assets/card.png
+    - assets/comment.png
   #   - assets/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

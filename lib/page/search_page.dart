@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:vocabulary/page/identify.dart';
 import 'package:vocabulary/tools/sqlite_tools.dart';
 
 import '../tools/api_dio_get_source_tools.dart';
@@ -30,15 +33,31 @@ class _SearchPageState extends State<SearchPage> {
     final height =size.height;
     return Scaffold(
       appBar: AppBar(
+        actions: [
+          InkWell(
+            child: Image.asset('assets/mac.png',width: width*0.075,),
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => IdentifyPage(),
+              ));
+            },
+          ),
+          SizedBox(width: 18,)
+        ],
         surfaceTintColor: Colors.white,
         title: TextField(
           controller: _searchController,
           decoration: InputDecoration(
             hintText: '输入搜索词...',
             hintStyle: TextStyle(color: Colors.grey[400]), // 提示文本样式
-            filled: true, // 设置为true，应用背景颜色
+            filled: true,
             fillColor: Colors.white, // 背景颜色
-            contentPadding: EdgeInsets.all(10), // 内边距，增加输入文本与边框的距离
+            contentPadding: EdgeInsets.only(
+                left: 20,
+                top: 10,
+                bottom: 10,
+                right: 10
+            ), // 内边距，增加输入文本与边框的距离
             border: OutlineInputBorder( // 边框样式
               borderRadius: BorderRadius.circular(30), // 圆角边框
             ),
@@ -69,7 +88,7 @@ class _SearchPageState extends State<SearchPage> {
               child: Row(
                 children: [
                   Icon(Icons.access_time_filled_rounded,color: Colors.blueAccent,),
-                  Text('近期搜索', style: TextStyle(fontSize: 18,color: Colors.blue ,fontWeight: FontWeight.bold),),
+                  Text('搜索历史', style: TextStyle(fontSize: 18,color: Colors.blue ,fontWeight: FontWeight.bold),),
                   IconButton(
                     alignment: Alignment.center,
                     onPressed: () async {
@@ -77,7 +96,7 @@ class _SearchPageState extends State<SearchPage> {
                       await ApiDio.getSearchWord();
                       setState(() {});
                     },
-                    icon: Icon(Icons.delete, size: 18, color: Colors.blue.shade300,),
+                    icon: Icon(Icons.delete, size: 18, color: Colors.blue,),
                   )
                 ],
               ),
@@ -133,10 +152,20 @@ class _SearchPageState extends State<SearchPage> {
                   child: Row(
                     children: [
                       Icon(Icons.local_fire_department_rounded,color: Colors.redAccent,),
-                      Text('今日热搜', style: TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold),),
-                      IconButton(onPressed: (){
-                        ApiDio.getHotList();
-                      }, icon: Icon(Icons.refresh_rounded,size: 18, color: Colors.red.shade300,))
+                      Text('热歌榜', style: TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold),),
+                      IconButton(
+                        onPressed: (){
+                          final random = Random();
+                          int randomNumber = random.nextInt(4) + 1;
+                          ApiDio.getHotList(id: randomNumber.toString());
+                          setState(() {});
+                        },
+                        icon: Icon(
+                          Icons.refresh_rounded,
+                          size: 18,
+                          color: Colors.red,
+                        ),
+                      ),
                     ],
                   )
               ),
@@ -151,11 +180,6 @@ class _SearchPageState extends State<SearchPage> {
                     return ListTile(
                       dense: true,
                       title: Text('${index + 1}  ${ApiDio.hotModelList[index].searchWord}',style: TextStyle(fontSize: 16),), // 显示序号和搜索词
-                      trailing: ApiDio.hotModelList[index].iconUrl != null && index != 2 ?
-                      Image.network(
-                          width: width*0.04,
-                          ApiDio.hotModelList[index].iconUrl!
-                      ) : Text(''),
                       onTap: () async {
                         await SqlTools.inSearch(ApiDio.hotModelList[index].searchWord);
                         await ApiDio.getSearchWord();
@@ -176,7 +200,11 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
         onRefresh: () async {
-          ApiDio.getHotList();
+          // 创建一个随机数生成器
+          final random = Random();
+          // 生成1到4之间的随机整数
+          int randomNumber = random.nextInt(4) + 1;
+          ApiDio.getHotList(id:randomNumber.toString());
           await ApiDio.getSearchWord();
           setState(() {});
         },

@@ -1,10 +1,7 @@
-import 'dart:core';
 
-void main() {
-  // 获取当前时间
-  DateTime now = DateTime.now();
+import 'package:dio/dio.dart';
 
-  // 获取自Unix纪元以来的毫秒数
-  int millisecondsSinceEpoch = now.millisecondsSinceEpoch;
-  print('Milliseconds since epoch: $millisecondsSinceEpoch');
+void main() async {
+  Response response = await Dio().get('https://api.wer.plus/api/wytop?t=4');
+  print(response.data.toString());
 }

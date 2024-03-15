@@ -9,6 +9,7 @@ import 'package:vocabulary/tools/audio_play_tools.dart';
 import '../model/music.dart';
 import '../tools/api_dio_get_source_tools.dart';
 import '../tools/sqlite_tools.dart';
+import 'music_comment.dart';
 
 
 class RandPage extends StatefulWidget {
@@ -44,13 +45,13 @@ class _RandPageState extends State<RandPage> {
   @override
   Widget build(BuildContext context) {
     final size =MediaQuery.of(context).size;
+    final width =size.width;
     return PopScope(
       onPopInvoked: (state){
         if(AudioPlayerUtil.state == PlayerState.paused){
 
         }else{
           AudioPlayerUtil.listPlayerHandle(musicModels: ApiDio.randomList, musicModel:  ApiDio.randomList[ApiDio.randomList.length-2]);
-          //AudioPlayerUtil.playerHandle(model: ApiDio.randomList[ApiDio.randomList.length-2]);
         }
       },
       child: Scaffold(
@@ -60,7 +61,20 @@ class _RandPageState extends State<RandPage> {
               color: Colors.white, // 背景色设置为透明
             ),
             collapseMode: CollapseMode.parallax,
+
           ),
+          actions: [
+            InkWell(
+              child: Image.asset('assets/comment.png',width: width*0.08,),
+              onTap: () async {
+                await ApiDio.getComment(ApiDio.randomList[ApiDio.randomList.length-2].id.toString());
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => CommentList(musicModel: ApiDio.randomList[ApiDio.randomList.length-2]),
+                ));
+              },
+            ),
+            SizedBox(width: 15,)
+          ],
         ),
         body: AudioPlayerUtil.musicModel == null?Container():Flex(
           direction: Axis.vertical,
@@ -74,7 +88,6 @@ class _RandPageState extends State<RandPage> {
                   print('current: $current, next: $next');
                   await ApiDio.getRandomMusic(1).then((value){
                     AudioPlayerUtil.listPlayerHandle(musicModels: ApiDio.randomList, musicModel:  ApiDio.randomList[ApiDio.randomList.length-2]);
-                    //AudioPlayerUtil.playerHandle(model: ApiDio.randomList[ApiDio.randomList.length-2]);
                   });
                   return true;
                 },

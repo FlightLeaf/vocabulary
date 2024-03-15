@@ -626,6 +626,42 @@
       "languageVersion": "2.18"
     },
     {
+      "name": "record",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/record-4.4.4",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "record_linux",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/record_linux-0.4.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "record_macos",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/record_macos-0.2.2",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "record_platform_interface",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/record_platform_interface-0.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "record_web",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/record_web-0.5.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
+      "name": "record_windows",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/record_windows-0.7.1",
+      "packageUri": "lib/",
+      "languageVersion": "2.15"
+    },
+    {
       "name": "shared_preferences",
       "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/shared_preferences-2.2.2",
       "packageUri": "lib/",
@@ -902,7 +938,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-03-12T04:21:47.572093Z",
+  "generated": "2024-03-14T17:14:10.903722Z",
   "generator": "pub",
   "generatorVersion": "3.3.0"
 }

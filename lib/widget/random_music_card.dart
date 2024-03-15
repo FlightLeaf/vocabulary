@@ -146,6 +146,7 @@ class _CardChildPageState extends State<CardChildPage> {
                     },
                   )
               ),
+              SizedBox(height: 5,),
               Container(
                 //color: Colors.white,
                 child: Column(

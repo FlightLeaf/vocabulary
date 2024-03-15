@@ -76,6 +76,8 @@ class _MusicPlayerState extends State<MusicPlayer> {
     return minString+":"+secString;
   }
 
+  int next = 0;
+
   @override
   void dispose() {
     super.dispose();
@@ -110,15 +112,15 @@ class _MusicPlayerState extends State<MusicPlayer> {
           collapseMode: CollapseMode.parallax,
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.comment_rounded, size: 24, color: Colors.green),
-            onPressed: () {
+          InkWell(
+            child: Image.asset('assets/comment.png',width: width*0.08,),
+            onTap: () {
               Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => CommentList(musicModel: AudioPlayerUtil.musicModel!),
               ));
             },
           ),
-          SizedBox(width: 10,)
+          SizedBox(width: 15,)
         ],
       ),
       body: Container(
@@ -178,19 +180,44 @@ class _MusicPlayerState extends State<MusicPlayer> {
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 4,
               child:Center(
-                child: Row(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      textAlign: TextAlign.center,
-                      musicModel.name+' - ',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          textAlign: TextAlign.center,
+                          musicModel.name,
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        IconButton(
+                          icon: isLove?Icon(Icons.favorite_rounded, size: 20, color: Colors.red,):Icon(Icons.favorite_border_rounded,size: 26,),
+                          onPressed: () async {
+                            if(isLove){
+                              SqlTools.deLove(musicModel.id.toString());
+                              isLove = false;
+                              ApiDio.getLove();
+                              setState(() {
+
+                              });
+                            }else{
+                              SqlTools.inLoveMusic(musicModel);
+                              isLove = true;
+                              ApiDio.getLove();
+                              setState(() {
+
+                              });
+                            }
+                          },
+                        ),
+                      ],
                     ),
                     Text(
                       musicModel.author,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 16,),
                     ),
                   ],
                 ),
@@ -200,7 +227,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
             Expanded(
               flex: 9,
               child:Container(
-                //height: 160,
                 child: ListWheelScrollView(
                   controller: _scrollController,
                   perspective: 0.01,
@@ -227,22 +253,27 @@ class _MusicPlayerState extends State<MusicPlayer> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: isLove?Icon(Icons.favorite_rounded, size: 26, color: Colors.red,):Icon(Icons.favorite_border_rounded,size: 26,),
-                    onPressed: () async {
-                      if(isLove){
-                        SqlTools.deLove(musicModel.id.toString());
-                        isLove = false;
-                        ApiDio.getLove();
-                        setState(() {
-
-                        });
-                      }else{
-                        SqlTools.inLoveMusic(musicModel);
-                        isLove = true;
-                        ApiDio.getLove();
-                        setState(() {
-
-                        });
+                    icon: switch(AudioPlayerUtil.nextState){
+                      NextState.sequential => Icon(Icons.loop_rounded),
+                      NextState.random => Icon(Icons.shuffle_rounded),
+                      NextState.single => Icon(Icons.repeat_one_rounded),
+                    },
+                    onPressed: () {
+                      next = next + 1;
+                      switch (next) {
+                        case 1:
+                          AudioPlayerUtil.changeNextState(NextState.random);
+                          setState(() {});
+                          break;
+                        case 2:
+                          AudioPlayerUtil.changeNextState(NextState.single);
+                          setState(() {});
+                          break;
+                        case 3:
+                          AudioPlayerUtil.changeNextState(NextState.sequential);
+                          setState(() {});
+                          next = 0;
+                          break;
                       }
                     },
                   ),

@@ -13,11 +13,13 @@ import 'package:path_provider_foundation/path_provider_foundation.dart';
 import 'package:shared_preferences_foundation/shared_preferences_foundation.dart';
 import 'package:video_player_avfoundation/video_player_avfoundation.dart';
 import 'package:path_provider_linux/path_provider_linux.dart';
+import 'package:record_linux/record_linux.dart';
 import 'package:shared_preferences_linux/shared_preferences_linux.dart';
 import 'package:path_provider_foundation/path_provider_foundation.dart';
 import 'package:shared_preferences_foundation/shared_preferences_foundation.dart';
 import 'package:video_player_avfoundation/video_player_avfoundation.dart';
 import 'package:path_provider_windows/path_provider_windows.dart';
+import 'package:record_windows/record_windows.dart';
 import 'package:shared_preferences_windows/shared_preferences_windows.dart';
 
 @pragma('vm:entry-point')
@@ -92,6 +94,15 @@ class _PluginRegistrant {
       }
 
       try {
+        RecordLinux.registerWith();
+      } catch (err) {
+        print(
+          '`record_linux` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
         SharedPreferencesLinux.registerWith();
       } catch (err) {
         print(
@@ -134,6 +145,15 @@ class _PluginRegistrant {
       } catch (err) {
         print(
           '`path_provider_windows` threw an error: $err. '
+          'The app may not function as expected until you remove this plugin from pubspec.yaml'
+        );
+      }
+
+      try {
+        RecordWindows.registerWith();
+      } catch (err) {
+        print(
+          '`record_windows` threw an error: $err. '
           'The app may not function as expected until you remove this plugin from pubspec.yaml'
         );
       }

@@ -65,9 +65,26 @@ class _SearchResultPageState extends State<SearchResultPage> {
           controller: _searchController,
           decoration: InputDecoration(
             hintText: widget.searchWord,
+            hintStyle: TextStyle(color: Colors.grey[400]), // 提示文本样式
+            filled: true, // 设置为true，应用背景颜色
+            fillColor: Colors.white, // 背景颜色
+            contentPadding: EdgeInsets.only(
+                left: 20,
+                top: 10,
+                bottom: 10,
+                right: 10
+            ), // 内边距，增加输入文本与边框的距离
+            border: OutlineInputBorder( // 边框样式
+              borderRadius: BorderRadius.circular(30), // 圆角边框
+            ),
             suffixIcon: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
+              alignment: Alignment.centerLeft,
+              icon: Icon(Icons.search_sharp, color: Colors.black,), // 搜索图标颜色
+              onPressed: () async {
+                if(_searchController.text.isEmpty) return;
+                await SqlTools.inSearch(_searchController.text);
+                await ApiDio.getSearchWord();
+                setState(() {});
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => SearchResultPage(
                     searchWord: _searchController.text == ''

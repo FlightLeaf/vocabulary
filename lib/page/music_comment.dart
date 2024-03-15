@@ -17,13 +17,12 @@ class _CommentListState extends State<CommentList> {
   late MusicModel musicModel;
   @override
   void initState() {
-    musicModel = AudioPlayerUtil.musicModel!;
+    musicModel = widget.musicModel;
     init();
     super.initState();
   }
 
   void init() async{
-    //await ApiDio.getComment(widget.musicModel.id.toString());
     setState(() {
     });
   }

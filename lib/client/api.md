@@ -1,14 +1,3 @@
-## 推荐 mv
-说明 : 调用此接口 , 可获取推荐 mv
-接口地址 : /personalized/mv
-调用例子 : /personalized/mv
-
-## 推荐新音乐
-说明 : 调用此接口 , 可获取推荐新音乐
-可选参数 : limit: 取出数量 , 默认为 10 (不支持 offset)
-接口地址 : /personalized/newsong
-调用例子 : /personalized/newsong
-
 ## mv 排行
 说明 : 调用此接口 , 可获取 mv 排行
 可选参数 : limit: 取出数量 , 默认为 30
@@ -68,3 +57,7 @@ type:资源类型,对应以下类型,默认为 0 即 PC
 调用例子 : /artist/mv?id=6452
 
 https://tenapi.cn/v2/wyymv -X POST -d 'id=5439044'   MV地址
+
+https://api.52vmy.cn/api/music/wy/rand
+
+<div style="width:100%;height:0;padding-bottom:100%;position:relative;"><iframe src="https://giphy.com/embed/6FxJBpNTBgWdJCXKD4" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/LINEFRIENDS-frog-leonard-linefriends-6FxJBpNTBgWdJCXKD4">via GIPHY</a></p>
