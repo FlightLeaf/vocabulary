@@ -1,13 +1,13 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:vocabulary/model/mv.dart';
+import 'package:vocabulary/tools/get_source_tools.dart';
 
 import 'package:vocabulary/tools/audio_play_tools.dart';
 import '../videos/video_player_page.dart';
 
-
 class MvCard extends StatefulWidget {
-  const MvCard({Key? key,required this.mvSheet}) : super(key: key);
+  const MvCard({Key? key, required this.mvSheet}) : super(key: key);
 
   final MvModel mvSheet;
 
@@ -16,7 +16,6 @@ class MvCard extends StatefulWidget {
 }
 
 class _MvCardState extends State<MvCard> {
-
   @override
   void initState() {
     super.initState();
@@ -29,9 +28,9 @@ class _MvCardState extends State<MvCard> {
 
   @override
   Widget build(BuildContext context) {
-    final size =MediaQuery.of(context).size;
-    final width =size.width;
-    final height =size.height;
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
     return Card(
       color: Colors.white,
       margin: const EdgeInsets.only(
@@ -41,8 +40,8 @@ class _MvCardState extends State<MvCard> {
       elevation: 0,
       child: Container(
         color: Colors.white,
-        width: width*0.88,
-        height: width*0.618,
+        width: width * 0.88,
+        height: width * 0.618,
         child: Stack(
           children: [
             ClipRRect(
@@ -54,11 +53,15 @@ class _MvCardState extends State<MvCard> {
               ),
               child: InkWell(
                 onTap: () async {
-                  if(AudioPlayerUtil.state == PlayerState.playing){
-                    AudioPlayerUtil.listPlayerHandle(musicModels: AudioPlayerUtil.list);
+                  if (AudioPlayerUtil.state == PlayerState.playing) {
+                    AudioPlayerUtil.listPlayerHandle(
+                        musicModels: AudioPlayerUtil.list);
                   }
                   Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => VideoPlayerPage(mvModel: widget.mvSheet,url: widget.mvSheet.brs['720'].toString(),),
+                    builder: (context) => VideoPlayerPage(
+                      mvModel: widget.mvSheet,
+                      url: widget.mvSheet.brs['720'].toString(),
+                    ),
                   ));
                 },
                 child: Column(
@@ -85,17 +88,17 @@ class _MvCardState extends State<MvCard> {
                         child: Row(
                           children: [
                             Expanded(
-                              flex:10,
+                              flex: 10,
                               child: Container(
-                                  alignment: Alignment.topCenter,
-                                  child: Center(
-                                    child:Text(
-                                      widget.mvSheet.name+' - '+widget.mvSheet.artistName,
-                                      style: TextStyle(fontSize: 15),
-                                      softWrap: true,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                alignment: Alignment.topCenter,
+                                child: Center(
+                                  child: Text(
+                                    '${widget.mvSheet.name} - ${widget.mvSheet.artistName}',
+                                    style: const TextStyle(fontSize: 15),
+                                    softWrap: true,
+                                    overflow: TextOverflow.ellipsis,
                                   ),
+                                ),
                               ),
                             ),
                           ],

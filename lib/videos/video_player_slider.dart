@@ -1,11 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 
 import 'package:flutter/services.dart';
 
 import '../tools/videos_play_tools.dart';
-
 
 class VideoPlayerSlider extends StatefulWidget {
   const VideoPlayerSlider({Key? key}) : super(key: key);
@@ -23,62 +21,76 @@ class _VideoPlayerSliderState extends State<VideoPlayerSlider> {
   void initState() {
     // TODO: implement initState
     // 注意，切换横竖屏后，刷新widget，需将播放进度设置为当前position，而不是0
-    if(VideoPlayerUtils.isInitialized){
-      _sliderValue = VideoPlayerUtils.position.inMilliseconds / VideoPlayerUtils.duration.inMilliseconds;
+    if (VideoPlayerUtils.isInitialized) {
+      _sliderValue = VideoPlayerUtils.position.inMilliseconds /
+          VideoPlayerUtils.duration.inMilliseconds;
     }
     super.initState();
-    VideoPlayerUtils.positionListener(key: this, listener: (seconds){
-      if(_onChanged == true) return;
-      _currentDuration = VideoPlayerUtils.formatDuration(seconds);
-      _sliderValue = seconds / VideoPlayerUtils.duration.inSeconds;
-      if(!mounted) return;
-      setState(() {});
-    });
+    VideoPlayerUtils.positionListener(
+        key: this,
+        listener: (seconds) {
+          if (_onChanged == true) return;
+          _currentDuration = VideoPlayerUtils.formatDuration(seconds);
+          _sliderValue = seconds / VideoPlayerUtils.duration.inSeconds;
+          if (!mounted) return;
+          setState(() {});
+        });
     loadImage().then((image) {
       _customImage = image;
-      if(!mounted) return;
+      if (!mounted) return;
       setState(() {});
     });
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return _customImage == null ? const SizedBox() : Row(
-      children: [
-        Expanded(
-          child: SliderTheme(
-            data: SliderThemeData(
-              trackHeight: 8,
-              inactiveTrackColor: Colors.grey,
-              activeTrackColor: Colors.greenAccent,
-              thumbShape: SliderThumbImage(image: _customImage),
-              trackShape: const CustomTrackShape(),
-            ),
-            child: Slider(
-              value: _sliderValue,
-              onChangeStart: (_){
-                _onChanged = true;
-              },
-              onChangeEnd: (double value){
-                _onChanged = false;
-                int millisecond = (value * VideoPlayerUtils.duration.inMilliseconds).toInt();
-                VideoPlayerUtils.seekTo(position: Duration(milliseconds: millisecond));
-              },
-              onChanged: (double value){
-                int seconds = (value * VideoPlayerUtils.duration.inSeconds).toInt();
-                _currentDuration = VideoPlayerUtils.formatDuration(seconds);
-                _sliderValue = value;
-                if(!mounted) return;
-                setState(() {});
-              },
-            ),
-          ),
-        ),
-        const SizedBox(width: 10,),
-        Text(_currentDuration,style: const TextStyle(color: Colors.white,fontSize: 15),)
-      ],
-    );
+    return _customImage == null
+        ? const SizedBox()
+        : Row(
+            children: [
+              Expanded(
+                child: SliderTheme(
+                  data: SliderThemeData(
+                    trackHeight: 8,
+                    inactiveTrackColor: Colors.grey,
+                    activeTrackColor: Colors.greenAccent,
+                    thumbShape: SliderThumbImage(image: _customImage),
+                    trackShape: const CustomTrackShape(),
+                  ),
+                  child: Slider(
+                    value: _sliderValue,
+                    onChangeStart: (_) {
+                      _onChanged = true;
+                    },
+                    onChangeEnd: (double value) {
+                      _onChanged = false;
+                      int millisecond =
+                          (value * VideoPlayerUtils.duration.inMilliseconds)
+                              .toInt();
+                      VideoPlayerUtils.seekTo(
+                          position: Duration(milliseconds: millisecond));
+                    },
+                    onChanged: (double value) {
+                      int seconds =
+                          (value * VideoPlayerUtils.duration.inSeconds).toInt();
+                      _currentDuration =
+                          VideoPlayerUtils.formatDuration(seconds);
+                      _sliderValue = value;
+                      if (!mounted) return;
+                      setState(() {});
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                _currentDuration,
+                style: const TextStyle(color: Colors.white, fontSize: 15),
+              )
+            ],
+          );
   }
 
   Future<ui.Image> loadImage() async {
@@ -96,27 +108,33 @@ class _VideoPlayerSliderState extends State<VideoPlayerSlider> {
   }
 }
 
-class SliderThumbImage extends SliderComponentShape{
-  const SliderThumbImage({Key? key,this.image});
+class SliderThumbImage extends SliderComponentShape {
+  const SliderThumbImage({Key? key, this.image});
   final ui.Image? image;
 
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
     return const Size(0, 0);
   }
-  @override
-  void paint(PaintingContext context, Offset center, {
-    required Animation<double> activationAnimation, required Animation<double> enableAnimation,
-    required bool isDiscrete, required TextPainter labelPainter, required RenderBox parentBox,
-    required SliderThemeData sliderTheme, required TextDirection textDirection, required double value,
-    required double textScaleFactor, required Size sizeWithOverflow}) {
 
+  @override
+  void paint(PaintingContext context, Offset center,
+      {required Animation<double> activationAnimation,
+      required Animation<double> enableAnimation,
+      required bool isDiscrete,
+      required TextPainter labelPainter,
+      required RenderBox parentBox,
+      required SliderThemeData sliderTheme,
+      required TextDirection textDirection,
+      required double value,
+      required double textScaleFactor,
+      required Size sizeWithOverflow}) {
     final canvas = context.canvas;
     final imageWidth = image?.width ?? 10;
     final imageHeight = image?.height ?? 10;
     Offset imageOffset = Offset(
-      center.dx - imageWidth *0.5,
-      center.dy - imageHeight *0.5-2,
+      center.dx - imageWidth * 0.5,
+      center.dy - imageHeight * 0.5 - 2,
     );
     if (image != null) {
       canvas.drawImage(image!, imageOffset, Paint());
@@ -132,11 +150,13 @@ class CustomTrackShape extends RoundedRectSliderTrackShape {
     Offset offset = Offset.zero,
     required SliderThemeData sliderTheme,
     bool isEnabled = false,
-    bool isDiscrete = false,}) {
+    bool isDiscrete = false,
+  }) {
     final double trackHeight = sliderTheme.trackHeight!;
     final double trackWidth = parentBox.size.width;
     final double trackLeft = offset.dx;
-    final double trackTop = offset.dy + (parentBox.size.height - trackHeight) / 2;
+    final double trackTop =
+        offset.dy + (parentBox.size.height - trackHeight) / 2;
     return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
   }
 }

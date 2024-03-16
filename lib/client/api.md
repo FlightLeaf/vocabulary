@@ -60,4 +60,10 @@ https://tenapi.cn/v2/wyymv -X POST -d 'id=5439044'   MV地址
 
 https://api.52vmy.cn/api/music/wy/rand
 
+https://api.linhun.vip/api/dxmv?name=%E4%B9%8C%E5%85%B0%E5%B7%B4%E6%89%98%E7%9A%84%E5%A4%9C&n=1&apiKey=4e98008ee66b37fdb88105a0d3dcdce4     mv
+
 <div style="width:100%;height:0;padding-bottom:100%;position:relative;"><iframe src="https://giphy.com/embed/6FxJBpNTBgWdJCXKD4" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div><p><a href="https://giphy.com/gifs/LINEFRIENDS-frog-leonard-linefriends-6FxJBpNTBgWdJCXKD4">via GIPHY</a></p>
+
+
+
+https://api.linhun.vip/doc/gexingtouxiang.html

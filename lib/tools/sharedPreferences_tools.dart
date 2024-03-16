@@ -39,8 +39,7 @@ class DataUtils {
   static Future<bool> saveThemeColorIndex(int value) =>
       _spf.setInt('key_theme_color', value);
 
-  static int getThemeColorIndex() =>
-      _spf.getInt('key_theme_color') ?? 0;
+  static int getThemeColorIndex() => _spf.getInt('key_theme_color') ?? 0;
 
   static void remove(String key) => _spf.remove(key);
 

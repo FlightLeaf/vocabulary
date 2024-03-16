@@ -97,6 +97,7 @@ flutter:
     - assets/mac.png
     - assets/card.png
     - assets/comment.png
+    - assets/logo.png
   #   - assets/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -126,9 +127,7 @@ flutter:
   # see https://flutter.dev/custom-fonts/#from-packages
 
 icons_launcher:
-  image_path: "assets/app.png"
+  image_path: "assets/logo.png"
   platforms:
     android:
-      enable: true
-    ios:
       enable: true

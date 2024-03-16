@@ -7,7 +7,7 @@ import 'package:vocabulary/widget/random_music_card.dart';
 import 'package:vocabulary/tools/audio_play_tools.dart';
 
 import '../model/music.dart';
-import '../tools/api_dio_get_source_tools.dart';
+import '../tools/get_source_tools.dart';
 import '../tools/sqlite_tools.dart';
 import 'music_comment.dart';
 

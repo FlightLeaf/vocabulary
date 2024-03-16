@@ -6,7 +6,7 @@ import '../model/TempOther.dart';
 
 // ignore: must_be_immutable
 class LockIcon extends StatefulWidget {
-  LockIcon({Key? key,required this.lockCallback}) : super(key: key);
+  LockIcon({Key? key, required this.lockCallback}) : super(key: key);
   final Function lockCallback;
   late Function(bool) opacityCallback;
   @override
@@ -19,10 +19,10 @@ class _LockIconState extends State<LockIcon> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    widget.opacityCallback = (appear){
-      if(TempValue.isLocked) return; // 如果当前isLocked，不会触发，防止快速点击误触
+    widget.opacityCallback = (appear) {
+      if (TempValue.isLocked) return; // 如果当前isLocked，不会触发，防止快速点击误触
       _opacity = appear ? 1.0 : 0.0;
-      if(!mounted) return;
+      if (!mounted) return;
       setState(() {});
     };
   }
@@ -36,13 +36,17 @@ class _LockIconState extends State<LockIcon> {
         alignment: Alignment.centerLeft,
         child: IconButton(
           padding: EdgeInsets.zero,
-          onPressed: (){
+          onPressed: () {
             TempValue.isLocked = !TempValue.isLocked;
             widget.lockCallback();
-            if(!mounted) return;
+            if (!mounted) return;
             setState(() {});
           },
-          icon: Icon(TempValue.isLocked?Icons.lock_outlined:Icons.lock_open_outlined,color: Colors.white,size: 25,),
+          icon: Icon(
+            TempValue.isLocked ? Icons.lock_outlined : Icons.lock_open_outlined,
+            color: Colors.white,
+            size: 25,
+          ),
         ),
       ),
     );

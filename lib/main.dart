@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:vocabulary/tools/audio_play_tools.dart';
 import 'package:vocabulary/tools/sharedPreferences_tools.dart';
 import 'package:vocabulary/tools/sqlite_tools.dart';
 import 'package:vocabulary/tools/permission_tools.dart';
@@ -8,7 +9,7 @@ import 'package:vocabulary/tools/permission_tools.dart';
 import 'Page/home_page.dart';
 import 'package:flutter_splash_screen/flutter_splash_screen.dart';
 
-import 'tools/api_dio_get_source_tools.dart';
+import 'tools/get_source_tools.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +26,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> init() async {
     await SqlTools.readAndWriteImage();
-    await ApiDio.getNewMVID();
+    await ApiDio.getNewMvId();
     await ApiDio.getNewMV();
     await ApiDio.getRandomMusic(2);
     hideScreen();
@@ -33,7 +34,7 @@ class _MyAppState extends State<MyApp> {
     ApiDio.getHistory();
     ApiDio.getLove();
     ApiDio.getDownload();
-
+    AudioPlayerUtil.listPlayerHandle(musicModels: ApiDio.startList);
   }
 
   @override

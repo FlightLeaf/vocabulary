@@ -1,11 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:vocabulary/page/identify.dart';
+import 'package:vocabulary/page/search_mv_result_page.dart';
 import 'package:vocabulary/tools/sqlite_tools.dart';
 
-import '../tools/api_dio_get_source_tools.dart';
-import 'search_result_page.dart';
+import '../tools/get_source_tools.dart';
+import 'search_music_result_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -25,6 +23,7 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {});
     super.initState();
   }
+  int _value = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -34,15 +33,22 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          InkWell(
-            child: Image.asset('assets/mac.png',width: width*0.075,),
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => IdentifyPage(),
-              ));
-            },
+          DropdownButtonHideUnderline(
+            child: DropdownButton(
+              borderRadius: BorderRadius.circular(10),
+              value: _value,
+              style: const TextStyle(color: Colors.black),
+              items: const [
+                DropdownMenuItem(value: 1, child: Text(' 音乐 ',style: TextStyle(fontSize: 16),)),
+                DropdownMenuItem(value: 2, child: Text(' 视频 ',style: TextStyle(fontSize: 16),)),
+              ],
+              onChanged: (value) {
+                _value = value!;
+                setState(() {});
+              },
+            ),
           ),
-          SizedBox(width: 18,)
+          const SizedBox(width: 10,)
         ],
         surfaceTintColor: Colors.white,
         title: TextField(
@@ -52,26 +58,36 @@ class _SearchPageState extends State<SearchPage> {
             hintStyle: TextStyle(color: Colors.grey[400]), // 提示文本样式
             filled: true,
             fillColor: Colors.white, // 背景颜色
-            contentPadding: EdgeInsets.only(
-                left: 20,
+            contentPadding: const EdgeInsets.only(
+                left: 10,
                 top: 10,
                 bottom: 10,
                 right: 10
             ), // 内边距，增加输入文本与边框的距离
             border: OutlineInputBorder( // 边框样式
-              borderRadius: BorderRadius.circular(30), // 圆角边框
+              borderRadius: BorderRadius.circular(10), // 圆角边框
             ),
             suffixIcon: IconButton(
               alignment: Alignment.centerLeft,
-              icon: Icon(Icons.search_sharp, color: Colors.black,), // 搜索图标颜色
+              icon: const Icon(Icons.search_sharp, color: Colors.black,), // 搜索图标颜色
               onPressed: () async {
-                if(_searchController.text.isEmpty) return;
-                await SqlTools.inSearch(_searchController.text);
-                await ApiDio.getSearchWord();
-                setState(() {});
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => SearchResultPage(searchWord: _searchController.text,),
-                ));
+                if(_value == 1){
+                  if(_searchController.text.isEmpty) return;
+                  SqlTools.inSearch(_searchController.text);
+                  await ApiDio.getSearchWord();
+                  setState(() {});
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SearchResultPage(searchWord: _searchController.text,),
+                  ));
+                }else{
+                  if(_searchController.text.isEmpty) return;
+                  SqlTools.inSearch(_searchController.text);
+                  await ApiDio.getSearchWord();
+                  setState(() {});
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SearchMvResultPage(searchWord: _searchController.text,),
+                  ));
+                }
               },
             ),
           ),
@@ -83,12 +99,12 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             Container(
               color: Colors.white,
-              margin: EdgeInsets.only(left: 18, top: 10),
+              margin: const EdgeInsets.only(left: 18, top: 10),
               alignment: Alignment.centerLeft,
               child: Row(
                 children: [
-                  Icon(Icons.access_time_filled_rounded,color: Colors.blueAccent,),
-                  Text('搜索历史', style: TextStyle(fontSize: 18,color: Colors.blue ,fontWeight: FontWeight.bold),),
+                  const Icon(Icons.access_time_filled_rounded,color: Colors.blueAccent,),
+                  const Text('搜索历史', style: TextStyle(fontSize: 18,color: Colors.blue ,fontWeight: FontWeight.bold),),
                   IconButton(
                     alignment: Alignment.center,
                     onPressed: () async {
@@ -96,13 +112,13 @@ class _SearchPageState extends State<SearchPage> {
                       await ApiDio.getSearchWord();
                       setState(() {});
                     },
-                    icon: Icon(Icons.delete, size: 18, color: Colors.blue,),
+                    icon: const Icon(Icons.delete, size: 18, color: Colors.blue,),
                   )
                 ],
               ),
             ),
             Container(
-              margin: EdgeInsets.only(left: 8, top: 8),
+              margin: const EdgeInsets.only(left: 8, top: 8),
               color: Colors.white,
               alignment: Alignment.centerLeft,
               child: SingleChildScrollView(
@@ -119,16 +135,26 @@ class _SearchPageState extends State<SearchPage> {
                             child: Container(
                               color: Colors.grey.shade200,
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                              child: Text(song, style: TextStyle(fontSize: 15),),
+                              child: Text(song, style: const TextStyle(fontSize: 15),),
                             ),
                           ),
                           onTap: () async {
-                            await SqlTools.inSearch(song);
-                            await ApiDio.getSearchWord();
-                            setState(() {});
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => SearchResultPage(searchWord: song,),
-                            ));
+                            if(_value == 1){
+                              SqlTools.inSearch(song);
+                              await ApiDio.getSearchWord();
+                              setState(() {});
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SearchResultPage(searchWord: song,),
+                              ));
+                            }else{
+                              if(_searchController.text.isEmpty) return;
+                              SqlTools.inSearch(song);
+                              await ApiDio.getSearchWord();
+                              setState(() {});
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SearchMvResultPage(searchWord: song,),
+                              ));
+                            }
                           },
                         ),
                       ),
@@ -145,22 +171,20 @@ class _SearchPageState extends State<SearchPage> {
               flex: 5,
               child: Container(
                   color: Colors.white,
-                  margin: EdgeInsets.only(
+                  margin: const EdgeInsets.only(
                       left: 18
                   ),
                   alignment: Alignment.centerLeft,
                   child: Row(
                     children: [
-                      Icon(Icons.local_fire_department_rounded,color: Colors.redAccent,),
-                      Text('热歌榜', style: TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold),),
+                      const Icon(Icons.local_fire_department_rounded,color: Colors.redAccent,),
+                      const Text('热歌榜', style: TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold),),
                       IconButton(
                         onPressed: (){
-                          final random = Random();
-                          int randomNumber = random.nextInt(4) + 1;
-                          ApiDio.getHotList(id: randomNumber.toString());
+                          ApiDio.getHotList();
                           setState(() {});
                         },
-                        icon: Icon(
+                        icon: const Icon(
                           Icons.refresh_rounded,
                           size: 18,
                           color: Colors.red,
@@ -180,8 +204,13 @@ class _SearchPageState extends State<SearchPage> {
                     return ListTile(
                       dense: true,
                       title: Text('${index + 1}  ${ApiDio.hotModelList[index].searchWord}',style: TextStyle(fontSize: 16),), // 显示序号和搜索词
+                      trailing: ApiDio.hotModelList[index].iconUrl != null && index != 2 ?
+                      Image.network(
+                          width: width*0.04,
+                          ApiDio.hotModelList[index].iconUrl!
+                      ) : const Text(''),
                       onTap: () async {
-                        await SqlTools.inSearch(ApiDio.hotModelList[index].searchWord);
+                        SqlTools.inSearch(ApiDio.hotModelList[index].searchWord);
                         await ApiDio.getSearchWord();
                         setState(() {    });
                         Navigator.of(context).push(MaterialPageRoute(
@@ -193,18 +222,11 @@ class _SearchPageState extends State<SearchPage> {
                 ),
               ),
             ),
-            Expanded(
-              flex: 10,
-              child:Container(),
-            ),
+            Expanded(flex: 8,child: Container(),)
           ],
         ),
         onRefresh: () async {
-          // 创建一个随机数生成器
-          final random = Random();
-          // 生成1到4之间的随机整数
-          int randomNumber = random.nextInt(4) + 1;
-          ApiDio.getHotList(id:randomNumber.toString());
+          ApiDio.getHotList();
           await ApiDio.getSearchWord();
           setState(() {});
         },

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:card_swiper/card_swiper.dart';
 
-import '../tools/api_dio_get_source_tools.dart';
+import '../tools/get_source_tools.dart';
 
 
 class BannerPage extends StatefulWidget {

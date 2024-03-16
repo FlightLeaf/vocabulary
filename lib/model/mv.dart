@@ -12,7 +12,7 @@ class MvModel {
   int id;
   String name;
   String artistName;
-  String desc;
+  String? desc; // 修改此处，允许desc为null
   String cover;
   DateTime publishTime;
   Map<String, String> brs;
@@ -21,7 +21,7 @@ class MvModel {
     required this.id,
     required this.name,
     required this.artistName,
-    required this.desc,
+    this.desc, // 修改此处，添加问号表示可以为空
     required this.cover,
     required this.publishTime,
     required this.brs,
@@ -31,7 +31,7 @@ class MvModel {
     id: json["id"],
     name: json["name"],
     artistName: json["artistName"],
-    desc: json["desc"],
+    desc: json["desc"], // 修改此处，允许desc为null
     cover: json["cover"],
     publishTime: DateTime.parse(json["publishTime"]),
     brs: Map.from(json["brs"]).map((k, v) => MapEntry<String, String>(k, v)),
@@ -41,9 +41,10 @@ class MvModel {
     "id": id,
     "name": name,
     "artistName": artistName,
-    "desc": desc,
+    "desc": desc, // 修改此处，允许desc为null
     "cover": cover,
     "publishTime": "${publishTime.year.toString().padLeft(4, '0')}-${publishTime.month.toString().padLeft(2, '0')}-${publishTime.day.toString().padLeft(2, '0')}",
     "brs": Map.from(brs).map((k, v) => MapEntry<String, dynamic>(k, v)),
   };
 }
+

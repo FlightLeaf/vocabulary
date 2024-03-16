@@ -1,6 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-import 'package:vocabulary/tools/api_dio_get_source_tools.dart';
+import 'package:vocabulary/tools/get_source_tools.dart';
 import 'package:vocabulary/tools/audio_play_tools.dart';
 import 'package:vocabulary/widget/mv_card.dart';
 
@@ -15,8 +15,8 @@ class MusicPage extends StatefulWidget {
   State<MusicPage> createState() => _MusicPageState();
 }
 
-class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMixin {
-
+class _MusicPageState extends State<MusicPage>
+    with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
@@ -24,8 +24,8 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
 
   @override
   Widget build(BuildContext context) {
-    final size =MediaQuery.of(context).size;
-    final width =size.width;
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
     return Scaffold(
       appBar: AppBar(
         title: const Text('推荐'),
@@ -36,26 +36,28 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
           collapseMode: CollapseMode.parallax,
         ),
         actions: [
-
           InkWell(
-            child: Image.asset('assets/card.png',width: width*0.08,),
+            child: Image.asset(
+              'assets/card.png',
+              width: width * 0.08,
+            ),
             onTap: () {
-              try{
-                if(AudioPlayerUtil.state == PlayerState.playing && AudioPlayerUtil.musicModel!.id == ApiDio.randomList.first.id){
-
-                }else{
+              try {
+                if (AudioPlayerUtil.state == PlayerState.playing &&
+                    AudioPlayerUtil.musicModel!.id ==
+                        ApiDio.randomList.first.id) {
+                } else {
                   AudioPlayerUtil.playerHandle(model: ApiDio.randomList.first);
                 }
-              }catch(e){
+              } catch (e) {
                 print(e);
-              }finally{
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => RandPage()
-                ));
+              } finally {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => RandPage()));
               }
             },
           ),
-          SizedBox(width:15,)
+          const SizedBox(width: 18),
         ],
       ),
       body: RefreshIndicator(
@@ -65,7 +67,7 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
           child: Column(
             children: [
               Container(
-                  height: width*0.38,
+                  height: width * 0.38,
                   padding: const EdgeInsets.all(3),
                   margin: const EdgeInsets.only(
                     left: 15,
@@ -76,29 +78,36 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
                   child: const ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     child: BannerPage(),
-                  )
-              ),
+                  )),
               Container(
                 margin: const EdgeInsets.only(left: 17),
                 child: Row(
                   children: [
-                    const Text('今日推荐',style: TextStyle(fontSize: 18),),
+                    const Text(
+                      '今日推荐',
+                      style: TextStyle(fontSize: 18),
+                    ),
                     Container(
                       width: 15,
                     ),
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 height: 180,
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   reverse: false,
                   padding: const EdgeInsets.symmetric(horizontal: 6),
                   child: Row(
-                    children: ApiDio.musicSheetList.isEmpty? [] :ApiDio.musicSheetList.map((song) =>
-                        MusicCard(musicSheet: song, isOne: false),
-                    ).toList(),
+                    children: ApiDio.musicSheetList.isEmpty
+                        ? []
+                        : ApiDio.musicSheetList
+                            .map(
+                              (song) =>
+                                  MusicCard(musicSheet: song, isOne: false),
+                            )
+                            .toList(),
                   ),
                 ),
               ),
@@ -106,7 +115,10 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
                 margin: const EdgeInsets.only(left: 17),
                 child: Row(
                   children: [
-                    const Text(' MV推荐',style: TextStyle(fontSize: 18),),
+                    const Text(
+                      ' MV推荐',
+                      style: TextStyle(fontSize: 18),
+                    ),
                     Container(
                       width: 14,
                     ),
@@ -114,12 +126,16 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
                 ),
               ),
               Container(
-                height: width*0.618*10.3,
+                height: width * 0.618 * 10.3,
                 margin: const EdgeInsets.only(top: 4),
                 child: Column(
-                  children: ApiDio.newMvList.isEmpty? [] :ApiDio.newMvList.map((song) =>
-                      MvCard(mvSheet: song),
-                  ).toList(),
+                  children: ApiDio.newMvList.isEmpty
+                      ? []
+                      : ApiDio.newMvList
+                          .map(
+                            (song) => MvCard(mvSheet: song),
+                          )
+                          .toList(),
                 ),
               ),
             ],
@@ -135,4 +151,3 @@ class _MusicPageState extends State<MusicPage> with SingleTickerProviderStateMix
     );
   }
 }
-

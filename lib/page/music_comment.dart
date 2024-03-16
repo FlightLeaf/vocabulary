@@ -2,18 +2,16 @@ import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:vocabulary/model/music.dart';
 
-import '../tools/api_dio_get_source_tools.dart';
-import '../tools/audio_play_tools.dart';
+import '../tools/get_source_tools.dart';
 
 class CommentList extends StatefulWidget {
-  CommentList({super.key, required this.musicModel});
+  const CommentList({super.key, required this.musicModel});
   final MusicModel musicModel;
   @override
   _CommentListState createState() => _CommentListState();
 }
 
 class _CommentListState extends State<CommentList> {
-
   late MusicModel musicModel;
   @override
   void initState() {
@@ -22,9 +20,8 @@ class _CommentListState extends State<CommentList> {
     super.initState();
   }
 
-  void init() async{
-    setState(() {
-    });
+  void init() async {
+    setState(() {});
   }
 
   @override
@@ -37,16 +34,17 @@ class _CommentListState extends State<CommentList> {
     return Scaffold(
       appBar: AppBar(
         surfaceTintColor: Colors.white,
-        title: Text('热门评论'),
+        title: const Text('热门评论'),
       ),
       body: Container(
         padding: const EdgeInsets.all(10),
-        child:ListView.builder(
+        child: ListView.builder(
           itemCount: ApiDio.commentList.length,
           itemBuilder: (context, index) {
             return ListTile(
               isThreeLine: true,
-              contentPadding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
+              contentPadding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2),
               leading: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 //child: Image.network(ApiDio.commentList[index].user.avatarUrl.toString()),
@@ -62,7 +60,6 @@ class _CommentListState extends State<CommentList> {
                           "assets/app.png",
                           fit: BoxFit.fill,
                         );
-                        break;
                       case LoadState.failed:
                         return GestureDetector(
                           child: Stack(
@@ -72,7 +69,7 @@ class _CommentListState extends State<CommentList> {
                                 "assets/app.png",
                                 fit: BoxFit.fill,
                               ),
-                              Positioned(
+                              const Positioned(
                                 bottom: 0.0,
                                 left: 0.0,
                                 right: 0.0,
@@ -87,7 +84,6 @@ class _CommentListState extends State<CommentList> {
                             state.reLoadImage();
                           },
                         );
-                        break;
                       case LoadState.completed:
                         null;
                     }
@@ -96,24 +92,24 @@ class _CommentListState extends State<CommentList> {
                 ),
               ),
               title: Text(
-                ApiDio.commentList[index].user.nickname +
-                    '   ' +
-                    ApiDio.commentList[index].timeStr.year.toString() +
-                    '-' +
-                    ApiDio.commentList[index].timeStr.month.toString() +
-                    '-' +
-                    ApiDio.commentList[index].timeStr.day.toString(),
-                style: TextStyle(fontSize: 15, color: Colors.black),
+                '${ApiDio.commentList[index].user.nickname}   ${ApiDio.commentList[index].timeStr.year}-${ApiDio.commentList[index].timeStr.month}-${ApiDio.commentList[index].timeStr.day}',
+                style: const TextStyle(fontSize: 15, color: Colors.black),
               ),
-              subtitle: Column( // 使用Column来包含文本和点赞量
+              subtitle: Column(
+                // 使用Column来包含文本和点赞量
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(ApiDio.commentList[index].content, style: TextStyle(fontSize: 12)),
-                  Row( // 添加点赞量
+                  Text(ApiDio.commentList[index].content,
+                      style: const TextStyle(fontSize: 12)),
+                  Row(
+                    // 添加点赞量
                     children: <Widget>[
-                      Icon(Icons.favorite_rounded, size: 16, color: Colors.red),
-                      Text(' ' + formatLikeCount(ApiDio.commentList[index].likedCount), // 假设likeCount是点赞数量
-                          style: TextStyle(fontSize: 12, color: Colors.grey))
+                      const Icon(Icons.favorite_rounded,
+                          size: 16, color: Colors.red),
+                      Text(
+                          ' ${formatLikeCount(ApiDio.commentList[index].likedCount)}', // 假设likeCount是点赞数量
+                          style:
+                              const TextStyle(fontSize: 12, color: Colors.grey))
                     ],
                   ),
                 ],
@@ -122,7 +118,6 @@ class _CommentListState extends State<CommentList> {
                 setState(() {});
               },
             );
-
           },
         ),
       ),
@@ -136,12 +131,11 @@ class _CommentListState extends State<CommentList> {
     } else if (count < 10000) {
       // 如果小于10000，转换为k格式
       double kCount = count / 1000;
-      return kCount.toStringAsFixed(1) + 'k';
+      return '${kCount.toStringAsFixed(1)}k';
     } else {
       // 如果大于等于10000，转换为w格式
       double wCount = count / 10000;
-      return wCount.toStringAsFixed(1) + 'w';
+      return '${wCount.toStringAsFixed(1)}w';
     }
   }
-
 }

@@ -6,7 +6,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:vocabulary/tools/sqlite_tools.dart';
 
 import '../model/music.dart';
-import 'api_dio_get_source_tools.dart';
+import 'get_source_tools.dart';
 
 class AudioPlayerUtil{
 
@@ -41,7 +41,6 @@ class AudioPlayerUtil{
     }
     showToast('下一首播放');
     _instance._musicModels.insert(_instance._musicModels.indexOf(_instance._musicModel!)+1, models);
-
   }
 
   static void playerHandle({required MusicModel model}){
@@ -64,28 +63,32 @@ class AudioPlayerUtil{
 
   // 列表播放
   static Future<void> listPlayerHandle({required List<MusicModel> musicModels,MusicModel? musicModel} ) async {
-    if(_instance._musicModel == musicModel){
-      _instance._audioPlayer.pause();
-    }
-    else{
-      if(musicModel != null){ // 指定播放列表中某个曲子。自动开启列表播放
-        _instance._playNewAudio(musicModel);
-        _instance._musicModels = musicModels;
-        _instance._isListPlayer = true;
+    if(musicModels.isEmpty){
+      _instance._musicModels = musicModels;
+    }else{
+      if(_instance._musicModel == musicModel){
+        _instance._audioPlayer.pause();
       }
       else{
-        if(_instance._isListPlayer == true){ // 列表已经开启过。此处破；判断暂停、播放
-          if(_instance._state == PlayerState.playing){
-            _instance._audioPlayer.pause();
-          }
-          else{
-            _instance._audioPlayer.resume();
-          }
-        }
-        else{ // 开启列表播放,从0开始
-          _instance._playNewAudio(musicModels.first);
+        if(musicModel != null){ // 指定播放列表中某个曲子。自动开启列表播放
+          _instance._playNewAudio(musicModel);
           _instance._musicModels = musicModels;
           _instance._isListPlayer = true;
+        }
+        else{
+          if(_instance._isListPlayer == true){ // 列表已经开启过。此处破；判断暂停、播放
+            if(_instance._state == PlayerState.playing){
+              _instance._audioPlayer.pause();
+            }
+            else{
+              _instance._audioPlayer.resume();
+            }
+          }
+          else{ // 开启列表播放,从0开始
+            _instance._playNewAudio(musicModels.first);
+            _instance._musicModels = musicModels;
+            _instance._isListPlayer = true;
+          }
         }
       }
     }

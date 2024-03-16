@@ -1,7 +1,6 @@
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionUtils {
-
   static Future<bool> requestAllPermission() async {
     Map<Permission, PermissionStatus> permission = await [
       Permission.photos,
@@ -11,42 +10,24 @@ class PermissionUtils {
       Permission.notification,
     ].request();
     if (await Permission.photos.isGranted) {
-
       return true;
-    } else {
-
-    }
+    } else {}
     if (await Permission.speech.isGranted) {
-
       return true;
-    } else {
-
-    }
+    } else {}
     if (await Permission.storage.isGranted) {
-
       return true;
-    } else {
-
-    }
+    } else {}
     if (await Permission.phone.isGranted) {
-
       return true;
-    } else {
-
-    }
+    } else {}
     if (await Permission.notification.isGranted) {
-
       return true;
-    } else {
-
-    }
+    } else {}
     return false;
   }
 
   static Future<bool> requestPhotosPermission() async {
-    Map<Permission, PermissionStatus> permission = await [
-      Permission.photos,
-    ].request();
     if (await Permission.photos.isGranted) {
       print("照片权限申请通过");
       return true;
@@ -57,9 +38,6 @@ class PermissionUtils {
   }
 
   static Future<bool> requestSpeechPermission() async {
-    Map<Permission, PermissionStatus> permission = await [
-      Permission.speech,
-    ].request();
     if (await Permission.speech.isGranted) {
       print("语音权限申请通过");
       return true;
@@ -70,9 +48,6 @@ class PermissionUtils {
   }
 
   static Future<bool> requestStoragePermission() async {
-    Map<Permission, PermissionStatus> permission = await [
-      Permission.storage,
-    ].request();
     if (await Permission.storage.isGranted) {
       print("文件权限申请通过");
       return true;
@@ -83,9 +58,6 @@ class PermissionUtils {
   }
 
   static Future<bool> requestPhonePermission() async {
-    Map<Permission, PermissionStatus> permission = await [
-      Permission.phone,
-    ].request();
     if (await Permission.phone.isGranted) {
       print("手机权限申请通过");
       return true;
@@ -96,9 +68,6 @@ class PermissionUtils {
   }
 
   static Future<bool> requestNotificationPermission() async {
-    Map<Permission, PermissionStatus> permission = await [
-      Permission.notification,
-    ].request();
     if (await Permission.notification.isGranted) {
       print("通知权限申请通过");
       return true;
@@ -107,5 +76,4 @@ class PermissionUtils {
     }
     return false;
   }
-
 }

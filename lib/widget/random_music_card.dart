@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:vocabulary/tools/audio_play_tools.dart';
 
 import '../model/music.dart';
-import '../tools/api_dio_get_source_tools.dart';
+import '../tools/get_source_tools.dart';
 import '../tools/sqlite_tools.dart';
 
 
 class CardChildPage extends StatefulWidget {
-  CardChildPage({Key? key,}) : super(key: key);
+  const CardChildPage({Key? key,}) : super(key: key);
 
   @override
   _CardChildPageState createState() => _CardChildPageState();
@@ -68,7 +68,7 @@ class _CardChildPageState extends State<CardChildPage> {
     int sec = second % 60;
     String minString = min < 10 ? "0$min" : min.toString();
     String secString = sec < 10 ? "0$sec" : sec.toString();
-    return minString+":"+secString;
+    return "$minString:$secString";
   }
 
   @override
@@ -80,8 +80,8 @@ class _CardChildPageState extends State<CardChildPage> {
   }
 
   void scrollToIndex(int index) {
-    final itemExtent = 36.0; // 每个item的高度
-    _scrollController.animateTo(index * itemExtent, duration: Duration(milliseconds: 500), curve: Curves.easeInOut);
+    const itemExtent = 36.0; // 每个item的高度
+    _scrollController.animateTo(index * itemExtent, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
   }
 
   @override
@@ -91,15 +91,15 @@ class _CardChildPageState extends State<CardChildPage> {
     final height =size.height;
     return Center(
       child: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+        borderRadius: const BorderRadius.all(Radius.circular(10.0)),
         child: Container(
-          height: height * 0.75,
+          height: height * 0.80,
           width: width*0.83,
           color: Colors.grey.shade100,
           child: Column(
             children: [
               ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   child: ExtendedImage.network(
                     musicModel.picUrl!,
                     width: width*0.83,
@@ -111,9 +111,7 @@ class _CardChildPageState extends State<CardChildPage> {
                         case LoadState.loading:
                           return Image.asset(
                             "assets/music.gif",
-                            fit: BoxFit.fill,
                           );
-                          break;
                         case LoadState.failed:
                           return GestureDetector(
                             child: Stack(
@@ -123,7 +121,7 @@ class _CardChildPageState extends State<CardChildPage> {
                                   "assets/failed.jpg",
                                   fit: BoxFit.fill,
                                 ),
-                                Positioned(
+                                const Positioned(
                                   bottom: 0.0,
                                   left: 0.0,
                                   right: 0.0,
@@ -138,7 +136,6 @@ class _CardChildPageState extends State<CardChildPage> {
                               state.reLoadImage();
                             },
                           );
-                          break;
                         case LoadState.completed:
                           null;
                       }
@@ -146,24 +143,21 @@ class _CardChildPageState extends State<CardChildPage> {
                     },
                   )
               ),
-              SizedBox(height: 5,),
-              Container(
-                //color: Colors.white,
-                child: Column(
-                  children: [
-                    Text(
-                      textAlign: TextAlign.center,
-                      musicModel.name,
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      musicModel.author,
-                      style: TextStyle(fontSize: 14, ),
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 5,),
+              Column(
+                children: [
+                  Text(
+                    textAlign: TextAlign.center,
+                    musicModel.name,
+                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    musicModel.author,
+                    style: const TextStyle(fontSize: 14, ),
+                  ),
+                ],
               ),
-              Container(
+              SizedBox(
                 height: height * 0.17,
                 child: ListWheelScrollView(
                   controller: _scrollController,
@@ -178,7 +172,7 @@ class _CardChildPageState extends State<CardChildPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: isLove?Icon(Icons.favorite_rounded, size: 34, color: Colors.red,):Icon(Icons.favorite,size: 34,),
+                    icon: isLove?const Icon(Icons.favorite_rounded, size: 34, color: Colors.red,):const Icon(Icons.favorite,size: 34,),
                     onPressed: () async {
                       if(isLove){
                         SqlTools.deLove(musicModel.id.toString());
@@ -202,7 +196,6 @@ class _CardChildPageState extends State<CardChildPage> {
                     icon: Icon(_playing ? Icons.pause_circle_filled_rounded : Icons.play_circle_filled_rounded,size: 66,color: Colors.green,),
                     onPressed: () async {
                       AudioPlayerUtil.listPlayerHandle(musicModels: ApiDio.randomList, musicModel: musicModel);
-                      //AudioPlayerUtil.playerHandle(model: musicModel);
                       await ApiDio.getWord(AudioPlayerUtil.musicModel!.id.toString());
                       setState(() {
                         _playing = (AudioPlayerUtil.state == PlayerState.playing);
@@ -211,7 +204,7 @@ class _CardChildPageState extends State<CardChildPage> {
                   ),
                   SizedBox(width: width*0.05,),
                   IconButton(
-                    icon: Icon(Icons.share_rounded,size: 34,),
+                    icon: const Icon(Icons.share_rounded,size: 34,),
                     onPressed: () {
 
                     },
@@ -225,14 +218,12 @@ class _CardChildPageState extends State<CardChildPage> {
     );
   }
   Widget _buildItem(String text) {
-    return Container(
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(fontSize: 10),
-          softWrap: true,
-          //overflow: TextOverflow.ellipsis,
-        ),
+    return Center(
+      child: Text(
+        text,
+        style: const TextStyle(fontSize: 10),
+        softWrap: true,
+        //overflow: TextOverflow.ellipsis,
       ),
     );
   }

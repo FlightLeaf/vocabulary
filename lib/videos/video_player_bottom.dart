@@ -18,22 +18,22 @@ class VideoPlayerBottom extends StatefulWidget {
 }
 
 class _VideoPlayerBottomState extends State<VideoPlayerBottom> {
-  double _opacity = TempValue.isLocked ? 0.0 : 1.0;  // 不能固定值，横竖屏触发会重置
-  bool get _isFullScreen => MediaQuery.of(context).orientation == Orientation.landscape;
+  double _opacity = TempValue.isLocked ? 0.0 : 1.0; // 不能固定值，横竖屏触发会重置
+  bool get _isFullScreen =>
+      MediaQuery.of(context).orientation == Orientation.landscape;
   late Map<String, String> clarityMap;
   late MvModel model;
   late String nowBrs;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     model = widget.mvModel;
     clarityMap = model.brs;
     nowBrs = clarityMap.values.last;
-    widget.opacityCallback = (appear){
+    widget.opacityCallback = (appear) {
       _opacity = appear ? 1.0 : 0.0;
-      if(!mounted) return;
+      if (!mounted) return;
       setState(() {});
     };
   }
@@ -52,7 +52,8 @@ class _VideoPlayerBottomState extends State<VideoPlayerBottom> {
           height: 40,
           padding: const EdgeInsets.only(right: 10),
           decoration: const BoxDecoration(
-            gradient: LinearGradient( // 来点黑色到透明的渐变优雅一下
+            gradient: LinearGradient(
+              // 来点黑色到透明的渐变优雅一下
               begin: Alignment.bottomCenter,
               end: Alignment.topCenter,
               colors: [Color.fromRGBO(0, 0, 0, .7), Color.fromRGBO(0, 0, 0, 0)],
@@ -64,17 +65,24 @@ class _VideoPlayerBottomState extends State<VideoPlayerBottom> {
               const Expanded(
                 child: VideoPlayerSlider(),
               ),
-              Text("/${VideoPlayerUtils.formatDuration(VideoPlayerUtils.duration.inSeconds)}",style: const TextStyle(color: Colors.white,fontSize: 15),),
+              Text(
+                "/${VideoPlayerUtils.formatDuration(VideoPlayerUtils.duration.inSeconds)}",
+                style: const TextStyle(color: Colors.white, fontSize: 15),
+              ),
               IconButton(
                 padding: EdgeInsets.zero,
-                onPressed: (){
+                onPressed: () {
                   if (_isFullScreen) {
                     VideoPlayerUtils.setPortrait();
                   } else {
                     VideoPlayerUtils.setLandscape();
                   }
                 },
-                icon: Icon(_isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,color: Colors.white,size: 32,),
+                icon: Icon(
+                  _isFullScreen ? Icons.fullscreen_exit : Icons.fullscreen,
+                  color: Colors.white,
+                  size: 32,
+                ),
               ),
             ],
           ),
@@ -82,51 +90,63 @@ class _VideoPlayerBottomState extends State<VideoPlayerBottom> {
       ),
     );
   }
-  List<PopupMenuItem<String>> buildClarityItems() {
-    return clarityMap.keys.toList().map((String clarity) => PopupMenuItem<String>(
-      value: clarity,
-      child: Wrap(
-        spacing: 1,
-        alignment: WrapAlignment.center,
-        children: <Widget>[
-          clarityMap[clarity] == nowBrs ? Text(clarity, style: TextStyle(color: Colors.red,fontSize: 15),): Text(clarity),
-        ],
-      ),
-    )).toList();
-  }
 
+  List<PopupMenuItem<String>> buildClarityItems() {
+    return clarityMap.keys
+        .toList()
+        .map((String clarity) => PopupMenuItem<String>(
+              value: clarity,
+              child: Wrap(
+                spacing: 1,
+                alignment: WrapAlignment.center,
+                children: <Widget>[
+                  clarityMap[clarity] == nowBrs
+                      ? Text(
+                          clarity,
+                          style: const TextStyle(color: Colors.red, fontSize: 15),
+                        )
+                      : Text(clarity),
+                ],
+              ),
+            ))
+        .toList();
+  }
 }
+
 class VideoPlayerButton extends StatefulWidget {
   const VideoPlayerButton({Key? key}) : super(key: key);
   @override
   _VideoPlayerButtonState createState() => _VideoPlayerButtonState();
 }
 
-class _VideoPlayerButtonState extends State<VideoPlayerButton> with SingleTickerProviderStateMixin{
-
+class _VideoPlayerButtonState extends State<VideoPlayerButton>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
   @override
   void initState() {
     // TODO: implement initState
-    _animationController = AnimationController(vsync: this,duration: const Duration(milliseconds: 250));
-    if(VideoPlayerUtils.state == VideoPlayerState.playing){
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 250));
+    if (VideoPlayerUtils.state == VideoPlayerState.playing) {
       _animationController.forward();
     }
     super.initState();
+
     ///播放状态监听
-    VideoPlayerUtils.statusListener(key: this, listener: (state){
-      if(state == VideoPlayerState.playing){
-        _animationController.forward();
-      }else{
-        _animationController.reverse();
-      }
-    });
+    VideoPlayerUtils.statusListener(
+        key: this,
+        listener: (state) {
+          if (state == VideoPlayerState.playing) {
+            _animationController.forward();
+          } else {
+            _animationController.reverse();
+          }
+        });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     VideoPlayerUtils.removeStatusListener(this);
     _animationController.dispose();
     super.dispose();

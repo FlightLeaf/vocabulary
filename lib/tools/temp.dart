@@ -1,7 +1,23 @@
+import 'package:flutter/material.dart';
+class CustomDropDownButton extends StatefulWidget {
+  const CustomDropDownButton({Key? key}) : super(key: key);
 
-import 'package:dio/dio.dart';
+  @override
+  _CustomDropDownButtonState createState() => _CustomDropDownButtonState();
+}
 
-void main() async {
-  Response response = await Dio().get('https://api.wer.plus/api/wytop?t=4');
-  print(response.data.toString());
+class _CustomDropDownButtonState extends State<CustomDropDownButton> {
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: <Widget>[
+        DropdownButton(items: [
+          DropdownMenuItem(child: Text('北京')),
+          DropdownMenuItem(child: Text('天津')),
+          DropdownMenuItem(child: Text('河北'))
+        ], onChanged: (value) {})
+      ],
+    );
+  }
 }
