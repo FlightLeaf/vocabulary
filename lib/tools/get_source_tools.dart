@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:oktoast/oktoast.dart';
 
 import 'package:sqlite3/sqlite3.dart';
+import 'package:vocabulary/deBug/deBug_list.dart';
 import 'package:vocabulary/model/comment.dart';
 import 'package:vocabulary/model/music.dart';
 import 'package:vocabulary/model/mv.dart';
@@ -32,6 +34,8 @@ class ApiDio {
   static List<MusicModel> randomList = [];
   /// 评论列表
   static List<CommentModel> commentList = [];
+  /// 评论列表
+  static List<CommentModel> mvCommentList = [];
   ///历史音乐列表
   static List<MusicModel> historyList = [];
   /// 我喜欢的列表
@@ -43,9 +47,29 @@ class ApiDio {
 
   static List<MvModel> searchMvList = [];
 
+  static List<MvModel> mvHistory = [];
+
+  static List<String> historySuggest = [];
+
   static final Dio _dio = Dio();
 
   static final Database _database = sqlite3.open(SqlTools.fileSQL);
+
+  // 获取搜索建议
+  static Future<void> getSearchSuggest(String keyword) async {
+    historySuggest.clear();
+    try {
+      Response response = await _dio.get('http://159.75.108.178:3000/search/suggest?keywords=$keyword&type=mobile');
+      Map<String, dynamic> jsonMap = json.decode(response.toString());
+      List<dynamic> list = jsonMap['result']['allMatch'];
+      for (var item in list) {
+        historySuggest.add(item['keyword'].toString());
+      }
+    } catch (e) {
+      DeBugMessage.addMistake(e.toString());
+    }
+  }
+
 
   /// 获取热搜
   /// 返回值：获取成功返回true，失败返回false
@@ -60,6 +84,7 @@ class ApiDio {
       }).toList();
       return true;
     } catch (e) {
+      DeBugMessage.addMistake(e.toString());
       return false;
     }
   }
@@ -74,22 +99,69 @@ class ApiDio {
       res = response.toString();
       return res;
     } catch (e) {
+      DeBugMessage.addMistake(e.toString());
       return res;
+    }
+  }
+
+  /// 根据歌曲ID获取MP3模型
+  /// [id]：歌曲的ID
+  /// 返回值：音乐模型对象
+  // static Future<MusicModel> getNewMusic(int ids) async {
+  //   String id = ids.toString();
+  //   try {
+  //     Response response = await Dio().get("https://api.injahow.cn/meting/?type=song&id=$id");
+  //     List<dynamic> dataList = json.decode(response.toString());
+  //     Map<String, dynamic> data = dataList[0];
+  //
+  //     RegExp regex = RegExp(r"id=(\d+)");
+  //     Match match = regex.firstMatch(data['pic'].toString())!;
+  //     String pic = match.group(1)!;
+  //     print(data['pic'].toString()+'==========================');
+  //     print(pic);
+  //     String newPic = 'https://p3.music.126.net/HT4j0f5ETtAiOiCHcLYBww==/$pic.jpg';
+  //     return MusicModel(id: ids, name: data['name'], author: data['artist'], picUrl: newPic, mp3Url: 'https://api.injahow.cn/meting/?server=netease&type=url&id=$id',);
+  //   } catch (e) {
+  //     DeBugMessage.addMistake(e.toString());
+  //     return MusicModel(id: 1, name: '', author: '', picUrl: '', mp3Url: '');
+  //   }
+  // }
+
+  /// 根据歌曲ID获取音乐信息
+  /// [id]：歌曲的ID
+  /// 返回值：音乐模型对象
+  static Future<MusicModel> getMusic(int id) async {
+    MusicModel music;
+    print('=================================='+id.toString());
+    try {
+      Response response = await Dio().get("https://api.linhun.vip/api/wyyyy?id=${id.toString()}&apiKey=7fd47321de52414340f3535e40b6893d");
+      Map<String, dynamic> mp3 = json.decode(response.toString());
+      music = MusicModel(id: id, name: mp3['name'], author: mp3['author'], picUrl: mp3['img'], mp3Url: 'https://api.injahow.cn/meting/?server=netease&type=url&id=$id');
+      return music;
+    } catch (e) {
+      DeBugMessage.addMistake(e.toString());
+      music = MusicModel(id:0 , name: '', author: '', picUrl: '', mp3Url: '');
+      return music;
     }
   }
 
   /// 根据歌曲ID获取音乐信息
   /// [id]：歌曲的ID
   /// 返回值：音乐模型对象
-  static Future<MusicModel> getMusic(int id) async {
-    try {
-      Response response = await _dio.get("https://api.linhun.vip/api/wyyyy?id=${id.toString()}&n=1&apiKey=7fd47321de52414340f3535e40b6893d");
-      Map<String, dynamic> mp3 = json.decode(response.toString());
-      return MusicModel(id: id, name: mp3['name'], author: mp3['author'], picUrl: mp3['img'], mp3Url: mp3['mp3']);
-    } catch (e) {
-      return MusicModel(id: id , name: '', author: '', picUrl: '', mp3Url: '');
-    }
-  }
+  // static Future<String> getNewMusicUrl(int id) async {
+  //   String music;
+  //   try {
+  //     Response response = await Dio().get("https://api.linhun.vip/api/wyyyy?id=${id.toString()}&apiKey=7fd47321de52414340f3535e40b6893d");
+  //     Map<String, dynamic> mp3 = json.decode(response.toString());
+  //     music = mp3['mp3'];
+  //     return music;
+  //   } catch (e) {
+  //     DeBugMessage.addMistake(e.toString());
+  //     music = '';
+  //     return music;
+  //   }
+  // }
+
 
   /// 获取歌单推荐音乐列表
   static Future<void> getSheet() async {
@@ -104,9 +176,27 @@ class ApiDio {
     }
   }
 
-  /// 获取歌单推荐音乐列表
-  static void getHistory() {
+  static Future<void> getMvHistory() async {
+    var query = '''
+      SELECT d1.*
+      FROM mvHistory d1
+      INNER JOIN (
+        SELECT id, MAX(time) as maxTime
+        FROM mvHistory
+        GROUP BY id
+      ) d2 ON d1.id = d2.id AND d1.time = d2.maxTime
+      ORDER BY d1.time DESC
+    ''';
+    var results = _database.select(query);
+    mvHistory.clear();
+    for (var element in results) {
+      Map<String, dynamic> map = jsonDecode(element['data'].toString());
+      mvHistory.add(MvModel.fromJson(map));
+    }
+  }
 
+  /// 获取歌单推荐音乐列表
+  static Future<void> getHistory() async {
     var query = '''
       SELECT d1.*
       FROM history d1
@@ -122,6 +212,7 @@ class ApiDio {
     historyList.clear();
     for (var element in results) {
       historyList.add(MusicModel(id: int.parse(element['id']), name: element['name'], author: element['artist'], picUrl: element['pic'], mp3Url: element['url']),);
+      //print(MusicModel(id: int.parse(element['id']), name: element['name'], author: element['artist'], picUrl: element['pic'], mp3Url: element['url']).toJson().toString());
     }
   }
 
@@ -156,9 +247,28 @@ class ApiDio {
     try {
       Response response = await _dio.post("http://music.163.com/api/mv/detail?id=$id&type=mp4");
       Map<String, dynamic> mp4 = json.decode(response.toString());
-      String data = mp4['data']['brs']['720'];
-      return data;
+      Map<String, dynamic> dataUrl = mp4['data']['brs'];
+      List<String> resolutions = ['1080', '720', '480', '240'];
+      String url = '';
+      for (String resolution in resolutions) {
+        if (dataUrl.containsKey(resolution)) {
+          if (resolution == '1080') {
+            url = dataUrl['1080'].toString();
+          } else if (resolution == '720') {
+            url = dataUrl['720'].toString();
+          } else if (resolution == '480') {
+            url = dataUrl['480'].toString();
+          } else if (resolution == '240') {
+            url = dataUrl['240'].toString();
+          }
+          break;
+        }else{
+          continue;
+        }
+      }
+      return url;
     } catch (e) {
+      DeBugMessage.addMistake(e.toString());
       return '';
     }
   }
@@ -187,6 +297,7 @@ class ApiDio {
       }
       return true;
     } catch (e) {
+      DeBugMessage.addMistake(e.toString());
       return false;
     }
   }
@@ -201,6 +312,7 @@ class ApiDio {
       lyricsMap.clear();
       lyricsMap = getLyric(lrc);
     } catch (e) {
+      DeBugMessage.addMistake(e.toString());
       return;
     }
   }
@@ -226,13 +338,13 @@ class ApiDio {
   static Future<void> getRandomMusic(int i) async{
     try {
       while(i>0){
-        Response response = await _dio.get('https://api.vvhan.com/api/rand.music?type=json&sort=%E7%83%AD%E6%AD%8C%E6%A6%9C');
+        Response response = await _dio.get('https://api.vvhan.com/api/wyMusic/%E7%83%AD%E6%AD%8C%E6%A6%9C?type=json');
         Map<String, dynamic> map = json.decode(response.toString());
         Map<String, dynamic> rand = map['info'];
-        if(rand['mp3url'] == 'https://music.163.com/404'){
+        if(rand['url'] == 'https://music.163.com/404'){
           continue;
         }else{
-          randomList.add(MusicModel(id: rand['id'], name: rand['name'].toString(), author: rand['auther'].toString(), picUrl: rand['picUrl'], mp3Url: rand['mp3url']));
+          randomList.add(MusicModel(id: rand['id'], name: rand['name'].toString(), author: rand['auther'].toString(), picUrl: rand['picUrl'], mp3Url: 'https://api.injahow.cn/meting/?server=netease&type=url&id=${rand['id']}'));
           i = i-1;
         }
       }
@@ -240,7 +352,7 @@ class ApiDio {
         randomList.removeAt(0);
       }
     } catch (e) {
-      print(e);
+      DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -257,7 +369,7 @@ class ApiDio {
         idList.add(id);
       }
     } catch (e) {
-      print(e);
+      DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -274,7 +386,7 @@ class ApiDio {
         searchMVIDList.add(id);
       }
     } catch (e) {
-      print(e);
+      DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -290,7 +402,7 @@ class ApiDio {
         newMvList.add(MvModel.fromJson(rand));
       }
     } catch (e) {
-      print('=====$e');
+      DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -305,10 +417,11 @@ class ApiDio {
         Map<String, dynamic> mp4 = json.decode(response.toString());
         Map<String, dynamic> rand = mp4['data'];
         searchMvList.add(MvModel.fromJson(rand));
+        print(searchMvList);
         if(num == 9) return;
       }
     } catch (e) {
-      print('=====$e');
+      DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -323,7 +436,33 @@ class ApiDio {
         commentList.add(CommentModel.fromJson(element));
       }
     } catch (e) {
-      print(e);
+      DeBugMessage.addMistake(e.toString());
+    }
+  }
+
+  /// 获取MV评论
+  static Future<void> getMvComment(String id) async {
+    try {
+      mvCommentList.clear();
+      Response response = await _dio.get('http://159.75.108.178:3000/comment/mv?id=$id');
+      Map<String, dynamic> map = json.decode(response.toString());
+      List<dynamic> rand = map['hotComments'];
+      for (var element in rand) {
+        mvCommentList.add(CommentModel.fromJson(element));
+      }
+    }catch (e) {
+      DeBugMessage.addMistake(e.toString());
+      try{
+        mvCommentList.clear();
+        Response response = await _dio.get('http://159.75.108.178:3000/comment/mv?id=$id&realIP=159.75.108.178');
+        Map<String, dynamic> map = json.decode(response.toString());
+        List<dynamic> rand = map['hotComments'];
+        for (var element in rand) {
+          mvCommentList.add(CommentModel.fromJson(element));
+        }
+      } catch (e) {
+        DeBugMessage.addMistake(e.toString());
+      }
     }
   }
 }

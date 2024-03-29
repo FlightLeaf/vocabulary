@@ -10,10 +10,10 @@ import '../model/music.dart';
 import '../tools/get_source_tools.dart';
 import '../tools/sqlite_tools.dart';
 
-
 class CardChildPage extends StatefulWidget {
-  const CardChildPage({Key? key,}) : super(key: key);
-
+  const CardChildPage({
+    Key? key,
+  }) : super(key: key);
   @override
   _CardChildPageState createState() => _CardChildPageState();
 }
@@ -29,8 +29,8 @@ class _CardChildPageState extends State<CardChildPage> {
   String currentDuration = "00:00";
   bool isLove = false;
 
-  void init()  {
-    isLove =  SqlTools.isLoveMusic(musicModel.id.toString());
+  void init() {
+    isLove = SqlTools.isLoveMusic(musicModel.id.toString());
   }
 
   @override
@@ -40,30 +40,33 @@ class _CardChildPageState extends State<CardChildPage> {
     super.initState();
     _scrollController = ScrollController();
     ApiDio.getWord(AudioPlayerUtil.musicModel!.id.toString());
-    AudioPlayerUtil.statusListener(key: this, listener: (sate){
-      if(mounted){
-        setState(() {
-          ApiDio.getWord(AudioPlayerUtil.musicModel!.id.toString());
-          musicModel = AudioPlayerUtil.musicModel!;
+    AudioPlayerUtil.statusListener(
+        key: this,
+        listener: (sate) {
+          if (mounted) {
+            setState(() {
+              musicModel = AudioPlayerUtil.musicModel!;
+            });
+          }
         });
-      }
-    });
-    AudioPlayerUtil.positionListener(key: this, listener: (position){
-      init();
-      musicModel = AudioPlayerUtil.musicModel!;
-      _playing = (AudioPlayerUtil.state == PlayerState.playing);
-      currentDuration = _updateDuration(position);
-      ApiDio.getWord(AudioPlayerUtil.musicModel!.id.toString());
-      List<String> keys = ApiDio.lyricsMap.keys.toList(); // 将键转换为列表
-      int index = keys.indexOf(currentDuration.toString()); // 找到键的索引
-      if(index!= -1){
-        scrollToIndex(index);
-      }
-      setState(() {});
-    });
+    AudioPlayerUtil.positionListener(
+        key: this,
+        listener: (position) {
+          init();
+          musicModel = AudioPlayerUtil.musicModel!;
+          _playing = (AudioPlayerUtil.state == PlayerState.playing);
+          currentDuration = _updateDuration(position);
+          ApiDio.getWord(AudioPlayerUtil.musicModel!.id.toString());
+          List<String> keys = ApiDio.lyricsMap.keys.toList(); // 将键转换为列表
+          int index = keys.indexOf(currentDuration.toString()); // 找到键的索引
+          if (index != -1) {
+            scrollToIndex(index);
+          }
+          setState(() {});
+        });
   }
 
-  String _updateDuration(int second){
+  String _updateDuration(int second) {
     int min = second ~/ 60;
     int sec = second % 60;
     String minString = min < 10 ? "0$min" : min.toString();
@@ -81,20 +84,21 @@ class _CardChildPageState extends State<CardChildPage> {
 
   void scrollToIndex(int index) {
     const itemExtent = 36.0; // 每个item的高度
-    _scrollController.animateTo(index * itemExtent, duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
+    _scrollController.animateTo(index * itemExtent,
+        duration: const Duration(milliseconds: 500), curve: Curves.easeInOut);
   }
 
   @override
   Widget build(BuildContext context) {
-    final size =MediaQuery.of(context).size;
-    final width =size.width;
-    final height =size.height;
+    final size = MediaQuery.of(context).size;
+    final width = size.width;
+    final height = size.height;
     return Center(
       child: ClipRRect(
         borderRadius: const BorderRadius.all(Radius.circular(10.0)),
         child: Container(
           height: height * 0.80,
-          width: width*0.83,
+          width: width * 0.83,
           color: Colors.grey.shade100,
           child: Column(
             children: [
@@ -102,8 +106,8 @@ class _CardChildPageState extends State<CardChildPage> {
                   borderRadius: const BorderRadius.all(Radius.circular(10.0)),
                   child: ExtendedImage.network(
                     musicModel.picUrl!,
-                    width: width*0.83,
-                    height: width*0.83,
+                    width: width * 0.83,
+                    height: width * 0.83,
                     fit: BoxFit.fill,
                     cache: true,
                     loadStateChanged: (ExtendedImageState state) {
@@ -141,19 +145,23 @@ class _CardChildPageState extends State<CardChildPage> {
                       }
                       return null;
                     },
-                  )
+                  )),
+              const SizedBox(
+                height: 5,
               ),
-              const SizedBox(height: 5,),
               Column(
                 children: [
                   Text(
                     textAlign: TextAlign.center,
                     musicModel.name,
-                    style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   Text(
                     musicModel.author,
-                    style: const TextStyle(fontSize: 14, ),
+                    style: const TextStyle(
+                      fontSize: 14,
+                    ),
                   ),
                 ],
               ),
@@ -165,49 +173,72 @@ class _CardChildPageState extends State<CardChildPage> {
                   itemExtent: 36,
                   useMagnifier: true,
                   magnification: 1.5,
-                  children: ApiDio.lyricsMap.entries.map((value) => _buildItem(value.value)).toList(),
+                  children: ApiDio.lyricsMap.entries
+                      .map((value) => _buildItem(value.value))
+                      .toList(),
                 ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: isLove?const Icon(Icons.favorite_rounded, size: 34, color: Colors.red,):const Icon(Icons.favorite,size: 34,),
+                    icon: isLove
+                        ? const Icon(
+                            Icons.favorite_rounded,
+                            size: 34,
+                            color: Colors.red,
+                          )
+                        : const Icon(
+                            Icons.favorite,
+                            size: 34,
+                          ),
                     onPressed: () async {
-                      if(isLove){
+                      if (isLove) {
                         SqlTools.deLove(musicModel.id.toString());
                         isLove = false;
                         ApiDio.getLove();
-                        setState(() {
-
-                        });
-                      }else{
+                        setState(() {});
+                      } else {
                         SqlTools.inLoveMusic(musicModel);
                         isLove = true;
                         ApiDio.getLove();
-                        setState(() {
-
-                        });
+                        setState(() {});
                       }
                     },
                   ),
-                  SizedBox(width: width*0.05,),
+                  SizedBox(
+                    width: width * 0.05,
+                  ),
                   IconButton(
-                    icon: Icon(_playing ? Icons.pause_circle_filled_rounded : Icons.play_circle_filled_rounded,size: 66,color: Colors.green,),
+                    icon: Icon(
+                      _playing
+                          ? Icons.pause_circle_filled_rounded
+                          : Icons.play_circle_filled_rounded,
+                      size: 66,
+                      color: Colors.green,
+                    ),
                     onPressed: () async {
-                      AudioPlayerUtil.listPlayerHandle(musicModels: ApiDio.randomList, musicModel: musicModel);
-                      await ApiDio.getWord(AudioPlayerUtil.musicModel!.id.toString());
+                      print('==============================================');
+                      print(musicModel.id);
+                      AudioPlayerUtil.playerHandle(model: musicModel);
+                      musicModel = AudioPlayerUtil.musicModel!;
+                      await ApiDio.getWord(
+                          AudioPlayerUtil.musicModel!.id.toString());
                       setState(() {
-                        _playing = (AudioPlayerUtil.state == PlayerState.playing);
+                        _playing =
+                            (AudioPlayerUtil.state == PlayerState.playing);
                       });
                     },
                   ),
-                  SizedBox(width: width*0.05,),
+                  SizedBox(
+                    width: width * 0.05,
+                  ),
                   IconButton(
-                    icon: const Icon(Icons.share_rounded,size: 34,),
-                    onPressed: () {
-
-                    },
+                    icon: const Icon(
+                      Icons.share_rounded,
+                      size: 34,
+                    ),
+                    onPressed: () {},
                   ),
                 ],
               ),
@@ -217,13 +248,13 @@ class _CardChildPageState extends State<CardChildPage> {
       ),
     );
   }
+
   Widget _buildItem(String text) {
     return Center(
       child: Text(
         text,
         style: const TextStyle(fontSize: 10),
         softWrap: true,
-        //overflow: TextOverflow.ellipsis,
       ),
     );
   }

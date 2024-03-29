@@ -67,3 +67,5 @@ https://api.linhun.vip/api/dxmv?name=%E4%B9%8C%E5%85%B0%E5%B7%B4%E6%89%98%E7%9A%
 
 
 https://api.linhun.vip/doc/gexingtouxiang.html
+
+https://api.vvhan.com/api/avatar?class=jw&type=json

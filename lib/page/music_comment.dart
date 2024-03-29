@@ -92,7 +92,7 @@ class _CommentListState extends State<CommentList> {
                 ),
               ),
               title: Text(
-                '${ApiDio.commentList[index].user.nickname}   ${ApiDio.commentList[index].timeStr.year}-${ApiDio.commentList[index].timeStr.month}-${ApiDio.commentList[index].timeStr.day}',
+                '${ApiDio.commentList[index].user.nickname}   ${ApiDio.commentList[index].timeStr}',
                 style: const TextStyle(fontSize: 15, color: Colors.black),
               ),
               subtitle: Column(

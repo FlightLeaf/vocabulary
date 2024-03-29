@@ -3,7 +3,7 @@ import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
-import 'package:vocabulary/page/identify.dart';
+import 'package:vocabulary/page/shazam_encore_page.dart';
 import 'package:vocabulary/page/playing_list_page.dart';
 import 'package:vocabulary/page/search_page.dart';
 
@@ -11,7 +11,7 @@ import '../tools/get_source_tools.dart';
 import '../tools/audio_play_tools.dart';
 import 'music_page.dart';
 import 'message_page.dart';
-import 'play_page.dart';
+import 'audio_play_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage>
     const MusicPage(),
     const SearchPage(),
     const IdentifyPage(),
-    const MessagePage()
+    MessagePage()
   ];
   late AnimationController _ctrl;
   late bool _playing = false;
@@ -54,7 +54,8 @@ class _HomePageState extends State<HomePage>
                 _playing = state == PlayerState.playing;
                 String author = AudioPlayerUtil.musicModel?.author ?? 'Happy!';
                 nameAuthor =
-                    AudioPlayerUtil.musicModel?.name ?? 'Happy! - $author';
+                    '${AudioPlayerUtil.musicModel?.name} - ${AudioPlayerUtil.musicModel!.author}' ??
+                        'Happy! - $author';
                 img = AudioPlayerUtil.musicModel?.picUrl ?? 'NOT_FOUND';
                 //_ctrl.repeat(reverse: false);
               });

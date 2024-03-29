@@ -68,9 +68,17 @@ class _PlayingListPageState extends State<PlayingListPage> {
               ),
               trailing: IconButton(
                 onPressed: () {
-                  AudioPlayerUtil.removeMusicModel(
-                      model: AudioPlayerUtil.list[index]);
-                  setState(() {});
+
+                  if(AudioPlayerUtil.list[index] == AudioPlayerUtil.musicModel!){
+                    AudioPlayerUtil.nextMusic();
+                    AudioPlayerUtil.removeMusicModel(
+                        model: AudioPlayerUtil.list[index]);
+                    setState(() {});
+                  }else{
+                    AudioPlayerUtil.removeMusicModel(
+                        model: AudioPlayerUtil.list[index]);
+                    setState(() {});
+                  }
                 },
                 icon: const Icon(
                   Icons.clear_outlined,

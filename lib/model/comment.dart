@@ -12,7 +12,7 @@ class CommentModel {
   User user;
   int commentId;
   String content;
-  DateTime timeStr;
+  String timeStr;
   int likedCount;
 
   CommentModel({
@@ -27,7 +27,7 @@ class CommentModel {
     user: User.fromJson(json["user"]),
     commentId: json["commentId"],
     content: json["content"],
-    timeStr: DateTime.parse(json["timeStr"]),
+    timeStr: (json["timeStr"]),
     likedCount: json["likedCount"],
   );
 
@@ -35,7 +35,7 @@ class CommentModel {
     "user": user.toJson(),
     "commentId": commentId,
     "content": content,
-    "timeStr": "${timeStr.year.toString().padLeft(4, '0')}-${timeStr.month.toString().padLeft(2, '0')}-${timeStr.day.toString().padLeft(2, '0')}",
+    "timeStr": timeStr,
     "likedCount": likedCount,
   };
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oktoast/oktoast.dart';
+import 'package:vocabulary/deBug/deBug_list.dart';
 import 'package:vocabulary/tools/audio_play_tools.dart';
+import 'package:vocabulary/tools/login_state_tools.dart';
 import 'package:vocabulary/tools/sharedPreferences_tools.dart';
 import 'package:vocabulary/tools/sqlite_tools.dart';
 import 'package:vocabulary/tools/permission_tools.dart';
@@ -14,6 +16,9 @@ import 'tools/get_source_tools.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DataUtils.init();
+  if(DataUtils.hasKey('code')){
+    DataUtils.remove('code');
+  }
   runApp(MyApp());
 }
 
@@ -34,11 +39,15 @@ class _MyAppState extends State<MyApp> {
     ApiDio.getHistory();
     ApiDio.getLove();
     ApiDio.getDownload();
+    ApiDio.getMvHistory();
     AudioPlayerUtil.listPlayerHandle(musicModels: ApiDio.startList);
+    DeBugMessage.addMistake('这是一个错误信息示例');
+    LoginState.init();
   }
 
   @override
   void initState() {
+
     PermissionUtils.requestAllPermission();
     init();
     super.initState();
@@ -46,7 +55,7 @@ class _MyAppState extends State<MyApp> {
 
   ///hide your splash screen
   Future<void> hideScreen() async {
-    Future.delayed(Duration(microseconds: 500), () {
+    Future.delayed(Duration(microseconds: 88), () {
       FlutterSplashScreen.hide();
     });
   }

@@ -219,21 +219,27 @@
     },
     {
       "name": "dio",
-      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/dio-5.4.1",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/dio-5.4.2+1",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
     {
+      "name": "email_validator",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/email_validator-2.1.17",
+      "packageUri": "lib/",
+      "languageVersion": "2.12"
+    },
+    {
       "name": "extended_image",
-      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/extended_image-8.1.1",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/extended_image-8.2.0",
       "packageUri": "lib/",
       "languageVersion": "2.18"
     },
     {
       "name": "extended_image_library",
-      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/extended_image_library-3.6.0",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/extended_image_library-4.0.3",
       "packageUri": "lib/",
-      "languageVersion": "2.19"
+      "languageVersion": "3.2"
     },
     {
       "name": "fading_edge_scrollview",
@@ -297,7 +303,7 @@
     },
     {
       "name": "flutter_slidable",
-      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/flutter_slidable-3.0.1",
+      "rootUri": "file:///C:/Users/Leaf/AppData/Local/Pub/Cache/hosted/pub.flutter-io.cn/flutter_slidable-3.1.0",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     },
@@ -938,7 +944,7 @@
       "languageVersion": "3.2"
     }
   ],
-  "generated": "2024-03-16T07:48:36.291559Z",
+  "generated": "2024-03-29T06:06:47.413951Z",
   "generator": "pub",
   "generatorVersion": "3.3.0"
 }

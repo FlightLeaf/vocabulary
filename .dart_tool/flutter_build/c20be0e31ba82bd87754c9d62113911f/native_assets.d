@@ -1,0 +1,1 @@
+ D:\\Desktop\\Music\\vocabulary\\.dart_tool\\flutter_build\\c20be0e31ba82bd87754c9d62113911f\\native_assets.yaml: 

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -6,6 +7,7 @@ import 'package:oktoast/oktoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:vocabulary/model/music.dart';
+import 'package:vocabulary/model/mv.dart';
 
 import 'sharedPreferences_tools.dart';
 
@@ -33,6 +35,17 @@ class SqlTools {
   }
 
   static final Database _database = sqlite3.open(fileSQL);
+
+  static void inMvHistory(MvModel model){
+    DateTime now = DateTime.now();
+    String currentTime = now.millisecondsSinceEpoch.toString();
+    String data = jsonEncode(model.toJson());
+    var insertStatement = _database.prepare('''
+      INSERT OR REPLACE INTO mvHistory (data,id,time)
+      VALUES (?,?,?)
+    ''');
+    insertStatement.execute([data,model.id.toString(),currentTime]);
+  }
 
   static void inSearch(String word) {
     var insertStatement = _database.prepare('''
@@ -110,7 +123,6 @@ class SqlTools {
   }
 
   static void deTime(String id) {
-    // 准备删除语句
     var deleteStatement = _database.prepare('''
     DELETE FROM history WHERE id = ?
   ''');
@@ -133,6 +145,16 @@ class SqlTools {
     // 准备删除语句
     var deleteStatement = _database.prepare('''
     DELETE FROM love WHERE id = ?
+  ''');
+    // 执行删除操作，传入ID参数
+    deleteStatement.execute([id]);
+    showToast('删除成功');
+  }
+
+  static void deMv(String id) {
+    // 准备删除语句
+    var deleteStatement = _database.prepare('''
+    DELETE FROM mvHistory WHERE id = ?
   ''');
     // 执行删除操作，传入ID参数
     deleteStatement.execute([id]);

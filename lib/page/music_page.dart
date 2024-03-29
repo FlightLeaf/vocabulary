@@ -1,7 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:vocabulary/tools/get_source_tools.dart';
 import 'package:vocabulary/tools/audio_play_tools.dart';
+import 'package:vocabulary/tools/temp.dart';
 import 'package:vocabulary/widget/mv_card.dart';
 
 import '../Widget/music_card.dart';
@@ -36,28 +38,33 @@ class _MusicPageState extends State<MusicPage>
           collapseMode: CollapseMode.parallax,
         ),
         actions: [
-          InkWell(
-            child: Image.asset(
-              'assets/card.png',
-              width: width * 0.08,
-            ),
-            onTap: () {
-              try {
-                if (AudioPlayerUtil.state == PlayerState.playing &&
-                    AudioPlayerUtil.musicModel!.id ==
-                        ApiDio.randomList.first.id) {
-                } else {
-                  AudioPlayerUtil.playerHandle(model: ApiDio.randomList.first);
-                }
-              } catch (e) {
-                print(e);
-              } finally {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => RandPage()));
-              }
+          IconButton(
+            onPressed: (){
+              showToast('敬请期待-音乐迁移');
+              ApiDio.getMvHistory();
             },
+            icon: const Icon(Icons.tungsten_rounded,size: 28,color: Colors.blue),
           ),
-          const SizedBox(width: 18),
+          //const SizedBox(width: 6),
+          IconButton(
+              onPressed: (){
+                try {
+                  if (AudioPlayerUtil.state == PlayerState.playing &&
+                      AudioPlayerUtil.musicModel!.id ==
+                          ApiDio.randomList.first.id) {
+                  } else {
+                    AudioPlayerUtil.playerHandle(model: ApiDio.randomList.first);
+                  }
+                } catch (e) {
+                  print(e);
+                } finally {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => RandPage()));
+                }
+              },
+              icon: const Icon(Icons.library_music_rounded,size: 28,color: Colors.blue),
+          ),
+          const SizedBox(width: 6),
         ],
       ),
       body: RefreshIndicator(
