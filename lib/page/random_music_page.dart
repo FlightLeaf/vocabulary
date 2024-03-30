@@ -8,7 +8,6 @@ import 'package:vocabulary/tools/audio_play_tools.dart';
 
 import '../model/music.dart';
 import '../tools/get_source_tools.dart';
-import '../tools/sqlite_tools.dart';
 import 'music_comment.dart';
 
 
@@ -63,18 +62,6 @@ class _RandPageState extends State<RandPage> {
             collapseMode: CollapseMode.parallax,
 
           ),
-          actions: [
-            InkWell(
-              child: Image.asset('assets/comment.png',width: width*0.08,),
-              onTap: () async {
-                await ApiDio.getComment(ApiDio.randomList[ApiDio.randomList.length-2].id.toString());
-                Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CommentList(musicModel: ApiDio.randomList[ApiDio.randomList.length-2]),
-                ));
-              },
-            ),
-            SizedBox(width: 15,)
-          ],
         ),
         body: AudioPlayerUtil.musicModel == null?Container():Flex(
           direction: Axis.vertical,

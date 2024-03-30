@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:oktoast/oktoast.dart';
 
 import 'package:sqlite3/sqlite3.dart';
-import 'package:vocabulary/deBug/deBug_list.dart';
 import 'package:vocabulary/model/comment.dart';
 import 'package:vocabulary/model/music.dart';
 import 'package:vocabulary/model/mv.dart';
@@ -66,7 +64,7 @@ class ApiDio {
         historySuggest.add(item['keyword'].toString());
       }
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -84,7 +82,7 @@ class ApiDio {
       }).toList();
       return true;
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
       return false;
     }
   }
@@ -99,7 +97,7 @@ class ApiDio {
       res = response.toString();
       return res;
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
       return res;
     }
   }
@@ -139,7 +137,7 @@ class ApiDio {
       music = MusicModel(id: id, name: mp3['name'], author: mp3['author'], picUrl: mp3['img'], mp3Url: 'https://api.injahow.cn/meting/?server=netease&type=url&id=$id');
       return music;
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
       music = MusicModel(id:0 , name: '', author: '', picUrl: '', mp3Url: '');
       return music;
     }
@@ -268,7 +266,7 @@ class ApiDio {
       }
       return url;
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
       return '';
     }
   }
@@ -297,7 +295,7 @@ class ApiDio {
       }
       return true;
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
       return false;
     }
   }
@@ -312,7 +310,7 @@ class ApiDio {
       lyricsMap.clear();
       lyricsMap = getLyric(lrc);
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
       return;
     }
   }
@@ -352,7 +350,7 @@ class ApiDio {
         randomList.removeAt(0);
       }
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -369,7 +367,7 @@ class ApiDio {
         idList.add(id);
       }
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -386,7 +384,7 @@ class ApiDio {
         searchMVIDList.add(id);
       }
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -402,7 +400,7 @@ class ApiDio {
         newMvList.add(MvModel.fromJson(rand));
       }
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -421,7 +419,7 @@ class ApiDio {
         if(num == 9) return;
       }
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -436,7 +434,7 @@ class ApiDio {
         commentList.add(CommentModel.fromJson(element));
       }
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
     }
   }
 
@@ -451,7 +449,7 @@ class ApiDio {
         mvCommentList.add(CommentModel.fromJson(element));
       }
     }catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
       try{
         mvCommentList.clear();
         Response response = await _dio.get('http://159.75.108.178:3000/comment/mv?id=$id&realIP=159.75.108.178');
@@ -461,7 +459,7 @@ class ApiDio {
           mvCommentList.add(CommentModel.fromJson(element));
         }
       } catch (e) {
-        DeBugMessage.addMistake(e.toString());
+        //DeBugMessage.addMistake(e.toString());
       }
     }
   }

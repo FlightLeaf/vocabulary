@@ -31,21 +31,10 @@ class _MusicPageState extends State<MusicPage>
     return Scaffold(
       appBar: AppBar(
         title: const Text('推荐'),
-        flexibleSpace: FlexibleSpaceBar(
-          background: Container(
-            color: Colors.white, // 背景色设置为透明
-          ),
+        flexibleSpace: const FlexibleSpaceBar(
           collapseMode: CollapseMode.parallax,
         ),
         actions: [
-          IconButton(
-            onPressed: (){
-              showToast('敬请期待-音乐迁移');
-              ApiDio.getMvHistory();
-            },
-            icon: const Icon(Icons.tungsten_rounded,size: 28,color: Colors.blue),
-          ),
-          //const SizedBox(width: 6),
           IconButton(
               onPressed: (){
                 try {

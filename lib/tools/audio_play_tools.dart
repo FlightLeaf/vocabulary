@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:oktoast/oktoast.dart';
-import 'package:vocabulary/deBug/deBug_list.dart';
 import 'package:vocabulary/tools/sqlite_tools.dart';
 
 import '../model/music.dart';
@@ -349,7 +348,7 @@ class AudioPlayerUtil {
       ApiDio.getHistory();
       _showTipView(true);
     } catch (e) {
-      DeBugMessage.addMistake(e.toString());
+      //DeBugMessage.addMistake(e.toString());
     }
   }
 

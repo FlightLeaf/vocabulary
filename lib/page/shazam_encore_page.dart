@@ -55,7 +55,7 @@ class _IdentifyPageState extends State<IdentifyPage>
         bitRate: 128000,
         samplingRate: 8000,
       );
-      const timeout = Duration(seconds: 5);
+      const timeout = Duration(seconds: 4);
       Timer(
         timeout,
         () async {
@@ -96,11 +96,9 @@ class _IdentifyPageState extends State<IdentifyPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-      ),
       body: Column(
         children: [
+          Expanded(child: Container(), flex: 1,),
           Expanded(
             flex: 1,
             child: Container(

@@ -41,6 +41,9 @@ class _SearchPageState extends State<SearchPage> {
             }else{
               noHistory = true;
             }
+            if(value == ''){
+              noHistory = true;
+            }
             setState(() {});
           },
           controller: _searchController,

@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:vocabulary/tools/audio_play_tools.dart';
 
+import '../Page/music_comment.dart';
 import '../model/music.dart';
 import '../tools/get_source_tools.dart';
 import '../tools/sqlite_tools.dart';
@@ -235,10 +236,15 @@ class _CardChildPageState extends State<CardChildPage> {
                   ),
                   IconButton(
                     icon: const Icon(
-                      Icons.share_rounded,
+                      Icons.comment_rounded,
                       size: 34,
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      await ApiDio.getComment(ApiDio.randomList[ApiDio.randomList.length-2].id.toString());
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CommentList(musicModel: musicModel),
+                      ));
+                    },
                   ),
                 ],
               ),

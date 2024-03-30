@@ -119,12 +119,6 @@ class _MusicPlayerState extends State<MusicPlayer> {
           collapseMode: CollapseMode.parallax,
         ),
         actions: [
-          IconButton(
-            onPressed: (){
-              showToast('敬请期待-音乐迁移');
-            },
-            icon: const Icon(Icons.tungsten_rounded,size: 32,color: Colors.blue),
-          ),
           const SizedBox(
             width: 4,
           ),
