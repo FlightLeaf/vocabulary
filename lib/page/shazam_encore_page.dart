@@ -55,7 +55,7 @@ class _IdentifyPageState extends State<IdentifyPage>
         bitRate: 128000,
         samplingRate: 8000,
       );
-      const timeout = Duration(seconds: 4);
+      const timeout = Duration(seconds: 2);
       Timer(
         timeout,
         () async {
@@ -67,12 +67,12 @@ class _IdentifyPageState extends State<IdentifyPage>
                     data: FormData.fromMap({
                       'audio': await MultipartFile.fromFile(path.toString()),
                     }));
-            Map<String, dynamic> data = response.data;
+            String data = response.data;
             isRecording = false;
             dio.close();
             final RegExp pattern = RegExp(r'(\d+)');
             final RegExpMatch match =
-                pattern.firstMatch(data['label'].toString())!;
+                pattern.firstMatch(data.toString())!;
             final String extractedNumber = match.group(0)!;
 
             await ApiDio.getMusic(int.parse(extractedNumber)).then((value) {

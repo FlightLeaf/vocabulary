@@ -1,5 +1,3 @@
-/// Created by RongCheng on 2022/1/20.
-
 import 'package:flutter/material.dart';
 
 import '../model/TempOther.dart';

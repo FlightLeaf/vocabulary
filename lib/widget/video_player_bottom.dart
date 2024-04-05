@@ -1,5 +1,3 @@
-/// Created by RongCheng on 2022/1/19.
-
 import 'package:flutter/material.dart';
 import 'package:vocabulary/model/mv.dart';
 import 'package:vocabulary/widget/video_player_slider.dart';
